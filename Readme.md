@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Сергей Рагозин](https://up.htmlacademy.ru/ecmascript-individual/1/user/2397723).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Думчев](https://htmlacademy.ru/profile/nikopol-fw).
 
 ---
 
