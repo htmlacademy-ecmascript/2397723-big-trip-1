@@ -1,15 +1,13 @@
 import FilterView from '../view/filter';
 import { render } from '../render';
+export default class FilterPresenter {
+  сomponent = new FilterView();
 
-export default class FilterPresentner {
-  filterComponent = new FilterView();
-
-
-  constructor({filterContainer}) {
-    this.filterContainer = filterContainer;
+  constructor({сontainer}) {
+    this.сontainer = сontainer;
   }
 
   init() {
-    render(this.filterComponent, this.filterContainer);
+    render(this.сomponent, this.сontainer);
   }
 }
