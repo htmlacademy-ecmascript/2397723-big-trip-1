@@ -11,13 +11,12 @@ import EventFormOpenBtnView from '../view/event-form-open-btn';
 
 import EventFormDetailsView from '../view/event-form-details';
 import EventFormOffersListView from '../view/event-form-offers-list';
-import EventFormAvalableOffersView from '../view/event-form-avalable-offers';
+import EventFormAvailableOffersView from '../view/event-form-available-offers';
 import EventFormOfferItemView from '../view/event-form-offer-item';
 import EventFormDestinationView from '../view/event-form-destination';
 import EventFormDestinationPhotosContainerView from '../view/event-form-destination-photos-container';
 
 import EventPointView from '../view/event-point';
-
 
 import { render } from '../render';
 
@@ -25,8 +24,8 @@ const ADD_OFFERS_COUNT = 3;
 const EDIT_OFFERS_COUNT = 4;
 const TRIP_POINTS_COUNT = 3;
 
-export default class TripEventsPresentner {
-  eventsListComponent = new EventsListView();
+export default class TripEventsPresenter {
+  eventsListView = new EventsListView();
 
   /* Форма создания */
   addItemView = new EventItemView();
@@ -34,7 +33,7 @@ export default class TripEventsPresentner {
   addFormHeaderView = new EventFormHeaderView();
   addFormDetailsView = new EventFormDetailsView();
   addFormOffersList = new EventFormOffersListView();
-  addFormAvalableOffersView = new EventFormAvalableOffersView();
+  addFormAvailableOffersView = new EventFormAvailableOffersView();
   addFormDestinationView = new EventFormDestinationView();
 
   /* Форма редактирования */
@@ -43,7 +42,7 @@ export default class TripEventsPresentner {
   editFormHeaderView = new EventFormHeaderView();
   editFormDetailsView = new EventFormDetailsView();
   editFormOffersList = new EventFormOffersListView();
-  editFormAvalableOffersView = new EventFormAvalableOffersView();
+  editFormAvailableOffersView = new EventFormAvailableOffersView();
   editFormDestinationView = new EventFormDestinationView();
 
 
@@ -56,21 +55,21 @@ export default class TripEventsPresentner {
   }
 
   initEventsList() {
-    render(this.eventsListComponent, this.tripEventsContainer);
+    render(this.eventsListView, this.tripEventsContainer);
   }
 
   initAddForm() {
-    render(this.addItemView, this.eventsListComponent.getElement());
+    render(this.addItemView, this.eventsListView.getElement());
     render(this.addFormView, this.addItemView.getElement());
     render(this.addFormHeaderView, this.addFormView.getElement());
     render(new EventFormSaveBtnView(), this.addFormHeaderView.getElement());
     render(new EventFormResetBtnView('Cancel'), this.addFormHeaderView.getElement());
     render(this.addFormDetailsView, this.addFormView.getElement());
     render(this.addFormOffersList, this.addFormDetailsView.getElement());
-    render(this.addFormAvalableOffersView, this.addFormOffersList.getElement());
+    render(this.addFormAvailableOffersView, this.addFormOffersList.getElement());
 
     for (let i = 0; i < ADD_OFFERS_COUNT; i++) {
-      render(new EventFormOfferItemView(), this.addFormAvalableOffersView.getElement());
+      render(new EventFormOfferItemView(), this.addFormAvailableOffersView.getElement());
     }
 
     render(this.addFormDestinationView, this.addFormDetailsView.getElement());
@@ -78,7 +77,7 @@ export default class TripEventsPresentner {
   }
 
   initEditForm() {
-    render(this.editItemView, this.eventsListComponent.getElement());
+    render(this.editItemView, this.eventsListView.getElement());
     render(this.editFormView, this.editItemView.getElement());
     render(this.editFormHeaderView, this.editFormView.getElement());
     render(new EventFormSaveBtnView(), this.editFormHeaderView.getElement());
@@ -86,10 +85,10 @@ export default class TripEventsPresentner {
     render(new EventFormOpenBtnView(), this.editFormHeaderView.getElement());
     render(this.editFormDetailsView, this.editFormView.getElement());
     render(this.editFormOffersList, this.editFormDetailsView.getElement());
-    render(this.editFormAvalableOffersView, this.editFormOffersList.getElement());
+    render(this.editFormAvailableOffersView, this.editFormOffersList.getElement());
 
     for (let i = 0; i < EDIT_OFFERS_COUNT; i++) {
-      render(new EventFormOfferItemView(), this.editFormAvalableOffersView.getElement());
+      render(new EventFormOfferItemView(), this.editFormAvailableOffersView.getElement());
     }
 
     render(this.editFormDestinationView, this.editFormDetailsView.getElement());

@@ -1,17 +1,16 @@
-import FilterPresentner from './presenter/filter';
-import TripEventsPresentner from './presenter/trip-events';
+import FilterPresenter from './presenter/filter';
+import TripEventsPresenter from './presenter/trip-events';
 
 const headerFiltersElement = document.querySelector('.trip-controls__filters');
 const tripEventsElement = document.querySelector('.trip-events');
 
+const filterPresenter = new FilterPresenter({filterContainer: headerFiltersElement});
+const tripEventsPresenter = new TripEventsPresenter({tripEventsContainer: tripEventsElement});
 
-const filterPresentner = new FilterPresentner({filterContainer: headerFiltersElement});
-const tripEventsPresentner = new TripEventsPresentner({tripEventsContainer: tripEventsElement});
-
-filterPresentner.init();
-tripEventsPresentner.initSort();
-tripEventsPresentner.initEventsList();
-tripEventsPresentner.initAddForm();
-tripEventsPresentner.initEditForm();
-tripEventsPresentner.initTripPoints();
+filterPresenter.init();
+tripEventsPresenter.initSort();
+tripEventsPresenter.initEventsList();
+tripEventsPresenter.initAddForm();
+tripEventsPresenter.initEditForm();
+tripEventsPresenter.initTripPoints();
 
