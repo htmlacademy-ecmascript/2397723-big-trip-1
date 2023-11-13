@@ -3,8 +3,12 @@ import { createElement } from '../render';
 
 export default class FilterView {
 
+  constructor(filters) {
+    this.filters = filters;
+  }
+
   getTemplate() {
-    return createFilterTemplate();
+    return createFilterTemplate(this.filters);
   }
 
   getElement() {

@@ -3,8 +3,12 @@ import { createElement } from '../render';
 
 export default class SortView {
 
+  constructor(sortOptions) {
+    this.sortOptions = sortOptions;
+  }
+
   getTemplate() {
-    return createSortTemplate();
+    return createSortTemplate(this.sortOptions);
   }
 
   getElement() {
