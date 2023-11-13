@@ -2,6 +2,8 @@ import { createTypeListTemplate } from './type-list.template';
 import { createOffersListTemplate } from './edit-form.template';
 import { capitalizeFirstLetter, getById } from '../utils';
 
+// Названия ключей взяты из апишки. Где-то дальше, на сколько я понял, в уроках будет показано, как их здесь писать кемелКейсом, но получать с сервера в таком виде.
+// Впрочем, я и сейчас могу этим заморочиться. Но вроде требовать должны дальше.
 
 const initialData = {
   id: '',

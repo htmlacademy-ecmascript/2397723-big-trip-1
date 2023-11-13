@@ -1,5 +1,7 @@
 import { capitalizeFirstLetter } from '../utils';
 
+// Делать под этот шаблон отдельный View? Или как сейчас просто использовать его в другом шаблоне? Замечу, конкретно этот шаблон используется в ДВУХ других.
+
 export function createTypeListTemplate({eventId = 0, eventType = 'taxi', types = []}) {
   return (
     `<div class="event__type-wrapper">

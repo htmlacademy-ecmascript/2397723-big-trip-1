@@ -2,6 +2,7 @@ import { humanizeTaskDueDate, DATE_FORMAT, getByKey } from '../utils';
 import createOffersListTemplate from './offers-list.template';
 
 export default function createEventTemplate(events, offers, destinations) {
+  // Тут надо будет расширить список в соответствии с ТЗ (надпись меняется в зависимости от фильтра). Просто пока еще не определился, где состояние фильтров хранится.
   if (!events) {
     return (
       `<p class="trip-events__msg">

@@ -1,3 +1,5 @@
+// Как правильно передавать эти константы? Тоже через модель или достаточно сразу импортировать в презентер, как это сейчас?
+
 export const FILTERS = [
   {
     name: 'everything',
@@ -43,43 +45,4 @@ export const SORT_OPTIONS = [
     isDisable: true,
     isChecked: false
   },
-];
-
-export const TYPES = [
-  {
-    type: 'taxi',
-    isChecked: false
-  },
-  {
-    type: 'bus',
-    isChecked: true
-  },
-  {
-    type: 'train',
-    isChecked: false
-  },
-  {
-    type: 'ship',
-    isChecked: false
-  },
-  {
-    type: 'drive',
-    isChecked: false
-  },
-  {
-    type: 'flight',
-    isChecked: false
-  },
-  {
-    type: 'check-in',
-    isChecked: false
-  },
-  {
-    type: 'sightseeing',
-    isChecked: false
-  },
-  {
-    type: 'restaurant',
-    isChecked: false
-  }
 ];

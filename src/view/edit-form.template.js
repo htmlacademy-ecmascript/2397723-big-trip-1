@@ -1,6 +1,8 @@
 import { humanizeTaskDueDate, DATE_FORMAT, getByKey, getById } from '../utils';
 import { createTypeListTemplate } from './type-list.template';
 
+
+// Этот тоже надо или вынести в отдельный файл .template (создавать ли тогда под него отдельный view?). Не писал бы вопросы, вынес бы.
 export function createOffersListTemplate({eventOffersId = [], type, offers}) {
   const offersList = getByKey('type', type, offers).offers;
   return (
