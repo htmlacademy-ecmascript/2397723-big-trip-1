@@ -1,14 +1,37 @@
 import createSortTemplate from './sort.template';
 import { createElement } from '../render';
 
+const SORT_OPTIONS = [
+  {
+    name: 'day',
+    isDisable: false,
+    isChecked: true
+  },
+  {
+    name: 'event',
+    isDisable: true,
+    isChecked: false
+  },
+  {
+    name: 'time',
+    isDisable: false,
+    isChecked: false
+  },
+  {
+    name: 'price',
+    isDisable: false,
+    isChecked: false
+  },
+  {
+    name: 'offer',
+    isDisable: true,
+    isChecked: false
+  },
+];
 export default class SortView {
 
-  constructor(sortOptions) {
-    this.sortOptions = sortOptions;
-  }
-
   getTemplate() {
-    return createSortTemplate(this.sortOptions);
+    return createSortTemplate(SORT_OPTIONS);
   }
 
   getElement() {

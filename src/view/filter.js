@@ -1,14 +1,29 @@
 import createFilterTemplate from './filter.template';
 import { createElement } from '../render';
 
+const FILTERS = [
+  {
+    name: 'everything',
+    isChecked: false
+  },
+  {
+    name: 'future',
+    isChecked: false
+  },
+  {
+    name: 'present',
+    isChecked: false
+  },
+  {
+    name: 'past',
+    isChecked: true
+  },
+];
+
 export default class FilterView {
 
-  constructor(filters) {
-    this.filters = filters;
-  }
-
   getTemplate() {
-    return createFilterTemplate(this.filters);
+    return createFilterTemplate(FILTERS);
   }
 
   getElement() {

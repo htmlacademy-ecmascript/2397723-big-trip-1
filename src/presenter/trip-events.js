@@ -1,5 +1,4 @@
 import { render, RenderPosition } from '../render';
-import { SORT_OPTIONS } from '../const';
 import SortView from '../view/sort';
 import EventsView from '../view/event';
 import AddFormView from '../view/add-form';
@@ -18,7 +17,7 @@ export default class TripEventsPresenter {
     this.destinations = [...this.eventsModel.getDestinations()];
     this.eventsList = new EventsView(this.events, this.offers, this.destinations);
 
-    render(new SortView(SORT_OPTIONS), this.tripEventsContainer);
+    render(new SortView(), this.tripEventsContainer);
     render(this.eventsList, this.tripEventsContainer);
     render(new EditFormView(this.events[1], this.offers, this.destinations), this.eventsList.getElement(), RenderPosition.AFTERBEGIN);
     render(new AddFormView(this.offers, this.destinations), this.eventsList.getElement(), RenderPosition.AFTERBEGIN);
