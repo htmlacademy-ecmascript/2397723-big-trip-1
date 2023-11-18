@@ -1,26 +1,28 @@
-import { humanizeTaskDueDate, DATE_FORMAT, getByKey } from '../utils';
-import createOffersListTemplate from './offers-list.template';
+import { humanizeTaskDueDate, DATE_FORMAT } from '../utils';
 
-export default function createEventTemplate(events, offers, destinations) {
-  // Тут надо будет расширить список в соответствии с ТЗ (надпись меняется в зависимости от фильтра). Просто пока еще не определился, где состояние фильтров хранится.
-  if (!events) {
-    return (
-      `<p class="trip-events__msg">
-        Click New Event to create your first point
-      </p>`
-    );
-  }
-
-
+function createOffersListTemplate(offers) {
   return (
-    `<ul class="trip-events__list">${events.map((event) => (
-      `<li class="trip-events__item">
+    `<ul class="event__selected-offers">
+      ${offers.map((item) => (
+      `<li class="event__offer">
+        <span class="event__offer-title">${item.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${item.price}</span>
+      </li>`
+    )).join('')}
+    </ul>`
+  );
+}
+
+export default function createEventTemplate({ event, offers, destination }) {
+  return (
+    `<li class="trip-events__item" style="list-style-type: none">
         <div class="event">
           <time class="event__date" datetime="2019-03-18">${humanizeTaskDueDate(event.date_from, DATE_FORMAT.pointDay)}</time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${event.type}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">${event.type} ${getByKey('id', event.destination, destinations).name}</h3>
+          <h3 class="event__title">${event.type} ${destination.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
               <time class="event__start-time" datetime="${event.date_from}">${humanizeTaskDueDate(event.date_from, DATE_FORMAT.pointTime)}</time>
@@ -36,7 +38,7 @@ export default function createEventTemplate(events, offers, destinations) {
             &euro;&nbsp;<span class="event__price-value">${event.base_price}</span>
           </p>
 
-          ${createOffersListTemplate(event.offers, event.type, offers)}
+          ${createOffersListTemplate(offers)}
           <button class="event__favorite-btn  ${event.is_favorite ? 'event__favorite-btn--active' : ''}" type="button">
             <span class="visually-hidden">Add to favorite</span>
             <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -48,6 +50,5 @@ export default function createEventTemplate(events, offers, destinations) {
           </button>
         </div>
       </li>`
-    )).join('')}</ul>`
   );
 }

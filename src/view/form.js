@@ -1,20 +1,16 @@
-import createEventTemplate from './event.template';
+import createFormTemplate from './form.template';
 import { createElement } from '../render';
 
-export default class EventView {
+export default class FormView {
 
-  constructor({ event, offers, destination }) {
+  constructor({event, offers, destinations}) {
     this.event = event;
     this.offers = offers;
-    this.destination = destination;
+    this.destinations = destinations;
   }
 
   getTemplate() {
-    return createEventTemplate({
-      event: this.event,
-      offers: this.offers,
-      destination: this.destination
-    });
+    return createFormTemplate({event: this.event, offers: this.offers, destinations: this.destinations});
   }
 
   getElement() {
