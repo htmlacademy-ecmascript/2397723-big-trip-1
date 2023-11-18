@@ -3,11 +3,11 @@ import { capitalizeFirstLetter, humanizeTaskDueDate, DATE_FORMAT, getByKey, getB
 const initialData = {
   id: '0',
   type: 'taxi',
-  date_from: '',
-  date_to: '',
+  dateFrom: '',
+  dateTo: '',
   destination: '',
-  base_price: '',
-  is_favorite: false,
+  basePrice: '',
+  isFavorite: false,
   offers: []
 };
 
@@ -86,11 +86,11 @@ export default function createFormTemplate({ event, offers, destinations }) {
     data = {
       id: event.id,
       type: event.type,
-      date_from: event.date_from,
-      date_to: event.date_to,
+      dateFrom: event.dateFrom,
+      dateTo: event.dateTo,
       destination: event.destination,
-      base_price: event.base_price,
-      is_favorite: false,
+      basePrice: event.basePrice,
+      isFavorite: false,
       offers: event.offers
     };
   }
@@ -123,14 +123,14 @@ export default function createFormTemplate({ event, offers, destinations }) {
             class="event__input  event__input--time"
             id="event-start-time-${data.id}"
             type="text" name="event-start-time"
-            value="${humanizeTaskDueDate(data.date_from, DATE_FORMAT.dateTime)}">
+            value="${humanizeTaskDueDate(data.dateFrom, DATE_FORMAT.dateTime)}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-${data.id}">To</label>
             <input
             class="event__input  event__input--time"
             id="event-end-time-${data.id}"
             type="text" name="event-end-time"
-            value="${humanizeTaskDueDate(data.date_to, DATE_FORMAT.dateTime)}">
+            value="${humanizeTaskDueDate(data.dateTo, DATE_FORMAT.dateTime)}">
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -141,7 +141,7 @@ export default function createFormTemplate({ event, offers, destinations }) {
             <input
             class="event__input  event__input--price"
             id="event-price-${data.id}"
-            type="text" name="event-price" value="${data.base_price}">
+            type="text" name="event-price" value="${data.basePrice}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>

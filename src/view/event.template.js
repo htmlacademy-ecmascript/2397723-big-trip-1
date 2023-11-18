@@ -18,24 +18,24 @@ export default function createEventTemplate({ event, offers, destination }) {
   return (
     `<li class="trip-events__item" style="list-style-type: none">
         <div class="event">
-          <time class="event__date" datetime="2019-03-18">${humanizeTaskDueDate(event.date_from, DATE_FORMAT.pointDay)}</time>
+          <time class="event__date" datetime="2019-03-18">${humanizeTaskDueDate(event.dateFrom, DATE_FORMAT.pointDay)}</time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${event.type}.png" alt="Event type icon">
           </div>
           <h3 class="event__title">${event.type} ${destination.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime="${event.date_from}">${humanizeTaskDueDate(event.date_from, DATE_FORMAT.pointTime)}</time>
+              <time class="event__start-time" datetime="${event.dateFrom}">${humanizeTaskDueDate(event.dateFrom, DATE_FORMAT.pointTime)}</time>
               &mdash;
-              <time class="event__end-time" datetime="${event.date_to}">${humanizeTaskDueDate(event.date_to, DATE_FORMAT.pointTime)}</time>
+              <time class="event__end-time" datetime="${event.dateTo}">${humanizeTaskDueDate(event.dateTo, DATE_FORMAT.pointTime)}</time>
             </p>
             <p class="event__duration">
-            ${humanizeTaskDueDate(new Date(event.date_from) - new Date(event.date_to), DATE_FORMAT.pointDurationHours)}H
-            ${humanizeTaskDueDate(new Date(event.date_from) - new Date(event.date_to), DATE_FORMAT.pointDurationMinutes)}M
+            ${humanizeTaskDueDate(new Date(event.dateFrom) - new Date(event.dateTo), DATE_FORMAT.pointDurationHours)}H
+            ${humanizeTaskDueDate(new Date(event.dateFrom) - new Date(event.dateTo), DATE_FORMAT.pointDurationMinutes)}M
             </p>
           </div>
           <p class="event__price">
-            &euro;&nbsp;<span class="event__price-value">${event.base_price}</span>
+            &euro;&nbsp;<span class="event__price-value">${event.basePrice}</span>
           </p>
 
           ${createOffersListTemplate(offers)}
