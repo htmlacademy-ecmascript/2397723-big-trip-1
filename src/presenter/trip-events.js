@@ -36,7 +36,7 @@ export default class TripEventsPresenter {
     this.destinations = [...this.destinationsModel.getDestinations()];
     this.eventsBoard = new EventsBoardView();
 
-    if (!this.events) {
+    if (this.events) {
       render(new SortView(), this.tripEventsContainer);
       render(this.eventsBoard, this.tripEventsContainer);
       this.renderEvents(this.events);
