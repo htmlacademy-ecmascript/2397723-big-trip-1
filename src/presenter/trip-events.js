@@ -42,8 +42,8 @@ export default class TripEventsPresenter {
       this.renderEvents(this.events);
       render(new FormView({ event: this.events[1], offers: this.offers, destinations: this.destinations }), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
       render(new FormView({ offers: this.offers, destinations: this.destinations }), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
+    } else {
+      render(new EmptyEventsListView('Everything'), this.tripEventsContainer);
     }
-
-    render(new EmptyEventsListView('Everything'), this.tripEventsContainer);
   }
 }
