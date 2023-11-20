@@ -3,6 +3,7 @@ import SortView from '../view/sort';
 import EventView from '../view/event';
 import EventsBoardView from '../view/events-board';
 import FormView from '../view/form';
+import EmptyEventsListView from '../view/empty-events-list';
 
 export default class TripEventsPresenter {
 
@@ -35,12 +36,14 @@ export default class TripEventsPresenter {
     this.destinations = [...this.destinationsModel.getDestinations()];
     this.eventsBoard = new EventsBoardView();
 
-    render(new SortView(), this.tripEventsContainer);
-    render(this.eventsBoard, this.tripEventsContainer);
-    this.renderEvents(this.events);
+    if (!this.events) {
+      render(new SortView(), this.tripEventsContainer);
+      render(this.eventsBoard, this.tripEventsContainer);
+      this.renderEvents(this.events);
+      render(new FormView({ event: this.events[1], offers: this.offers, destinations: this.destinations }), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
+      render(new FormView({ offers: this.offers, destinations: this.destinations }), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
+    }
 
-
-    render(new FormView({event: this.events[1], offers: this.offers, destinations: this.destinations}), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
-    render(new FormView({offers: this.offers, destinations: this.destinations}), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
+    render(new EmptyEventsListView('Everything'), this.tripEventsContainer);
   }
 }
