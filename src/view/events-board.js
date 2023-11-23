@@ -1,10 +1,10 @@
-import createEventFormAvailableOffersTemplate from './event-form-available-offers.template';
+import createEventsBoardTemplate from './events-board.template';
 import { createElement } from '../render';
 
-export default class EventFormAvailableOffersView {
+export default class EventsBoardView {
 
   getTemplate() {
-    return createEventFormAvailableOffersTemplate();
+    return createEventsBoardTemplate();
   }
 
   getElement() {

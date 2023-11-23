@@ -1,10 +1,14 @@
-import createEventFormTemplate from './event-form.template';
+import createEmptyEventsListTemplate from './empty-events-list.template';
 import { createElement } from '../render';
 
-export default class EventFormView {
+export default class EmptyEventsListView {
+
+  constructor(filter) {
+    this.filter = filter;
+  }
 
   getTemplate() {
-    return createEventFormTemplate();
+    return createEmptyEventsListTemplate(this.filter);
   }
 
   getElement() {
