@@ -1,11 +1,9 @@
 import events from '../mock/points.json';
 
 export default class EventModel {
+  #events = events;
 
-  events = events;
-
-  getEvents() {
-    return this.events;
+  get events() {
+    return this.#events;
   }
-
 }

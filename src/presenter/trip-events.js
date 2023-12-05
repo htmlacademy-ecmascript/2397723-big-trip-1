@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../render';
+import { render, RenderPosition } from '../framework/render';
 import SortView from '../view/sort';
 import EventView from '../view/event';
 import EventsBoardView from '../view/events-board';
@@ -31,17 +31,17 @@ export default class TripEventsPresenter {
   }
 
   init() {
-    this.events = [...this.eventsModel.getEvents()];
-    this.offers = [...this.offersModel.getOffers()];
-    this.destinations = [...this.destinationsModel.getDestinations()];
+    this.events = [...this.eventsModel.events];
+    this.offers = [...this.offersModel.offers];
+    this.destinations = [...this.destinationsModel.destinations];
     this.eventsBoard = new EventsBoardView();
 
     if (this.events) {
       render(new SortView(), this.tripEventsContainer);
       render(this.eventsBoard, this.tripEventsContainer);
       this.renderEvents(this.events);
-      render(new FormView({ event: this.events[1], offers: this.offers, destinations: this.destinations }), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
-      render(new FormView({ offers: this.offers, destinations: this.destinations }), this.eventsBoard.getElement(), RenderPosition.AFTERBEGIN);
+      render(new FormView({ event: this.events[1], offers: this.offers, destinations: this.destinations }), this.eventsBoard.element, RenderPosition.AFTERBEGIN);
+      render(new FormView({ offers: this.offers, destinations: this.destinations }), this.eventsBoard.element, RenderPosition.AFTERBEGIN);
     } else {
       render(new EmptyEventsListView('Everything'), this.tripEventsContainer);
     }

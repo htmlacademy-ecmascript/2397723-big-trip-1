@@ -1,30 +1,20 @@
 import createEventTemplate from './event.template';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class EventView {
+export default class EventView extends AbstractView {
 
   constructor({ event, offers, destination }) {
+    super();
     this.event = event;
     this.offers = offers;
     this.destination = destination;
   }
 
-  getTemplate() {
+  get template() {
     return createEventTemplate({
       event: this.event,
       offers: this.offers,
       destination: this.destination
     });
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

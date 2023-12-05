@@ -1,20 +1,10 @@
 import createEventsBoardTemplate from './events-board.template';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class EventsBoardView {
 
-  getTemplate() {
+export default class EventsBoardView extends AbstractView {
+
+  get template() {
     return createEventsBoardTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

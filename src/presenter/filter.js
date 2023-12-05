@@ -1,5 +1,5 @@
 import FilterView from '../view/filter';
-import { render } from '../render';
+import { render } from '../framework/render';
 export default class FilterPresenter {
   сomponent = new FilterView();
 

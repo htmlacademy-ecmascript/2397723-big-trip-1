@@ -1,24 +1,14 @@
 import createEmptyEventsListTemplate from './empty-events-list.template';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class EmptyEventsListView {
+export default class EmptyEventsListView extends AbstractView {
 
   constructor(filter) {
+    super();
     this.filter = filter;
   }
 
-  getTemplate() {
+  get template() {
     return createEmptyEventsListTemplate(this.filter);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

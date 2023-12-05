@@ -1,5 +1,6 @@
 import createSortTemplate from './sort.template';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
+
 
 const SORT_OPTIONS = [
   {
@@ -28,20 +29,9 @@ const SORT_OPTIONS = [
     isChecked: false
   },
 ];
-export default class SortView {
+export default class SortView extends AbstractView {
 
-  getTemplate() {
+  get template() {
     return createSortTemplate(SORT_OPTIONS);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
