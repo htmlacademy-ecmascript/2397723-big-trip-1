@@ -12,5 +12,4 @@ export default class DestinationsModel {
     const eventsDestination = getByKey('id', id, this.#destinations);
     return eventsDestination;
   }
-
 }

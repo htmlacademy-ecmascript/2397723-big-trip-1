@@ -1,7 +1,6 @@
 import createSortTemplate from './sort.template';
 import AbstractView from '../framework/view/abstract-view';
 
-
 const SORT_OPTIONS = [
   {
     name: 'day',
@@ -30,8 +29,9 @@ const SORT_OPTIONS = [
   },
 ];
 export default class SortView extends AbstractView {
+  #sortOptions = SORT_OPTIONS;
 
   get template() {
-    return createSortTemplate(SORT_OPTIONS);
+    return createSortTemplate(this.#sortOptions);
   }
 }

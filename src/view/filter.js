@@ -22,8 +22,9 @@ const FILTERS = [
 ];
 
 export default class FilterView extends AbstractView {
+  #filters = FILTERS;
 
   get template() {
-    return createFilterTemplate(FILTERS);
+    return createFilterTemplate(this.#filters);
   }
 }

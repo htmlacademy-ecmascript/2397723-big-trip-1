@@ -1,7 +1,6 @@
 import createFormTemplate from './form.template';
 import AbstractView from '../framework/view/abstract-view';
 
-
 export default class FormView extends AbstractView {
   #event = null;
   #offers = null;

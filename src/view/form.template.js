@@ -23,7 +23,6 @@ function createTypeListTemplate({ eventId, eventType, types }) {
     <div class="event__type-list">
       <fieldset class="event__type-group">
         <legend class="visually-hidden">Event type</legend>
-
       ${types.map((type) => (
       `<div class="event__type-item">
           <input
@@ -45,7 +44,6 @@ function createTypeListTemplate({ eventId, eventType, types }) {
   </div>`
   );
 }
-
 
 function createOffersListTemplate({ eventOffersId = [], type, offers }) {
   const offersList = getByKey('type', type, offers).offers;
@@ -79,7 +77,6 @@ function createDestinationsTemplate(destinations) {
 }
 
 export default function createFormTemplate({ event, offers, destinations }) {
-
   let data = initialData;
 
   if (event) {
@@ -100,7 +97,6 @@ export default function createFormTemplate({ event, offers, destinations }) {
     ` <li class="trip-events__item" style="list-style-type: none">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
-
           ${createTypeListTemplate({ eventId: data.id, eventType: data.type, types: offers })}
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-${data.id}">
@@ -116,7 +112,6 @@ export default function createFormTemplate({ event, offers, destinations }) {
               ${createDestinationsTemplate(destinations)}
             </datalist>
           </div>
-
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-${data.id}">From</label>
             <input
@@ -132,7 +127,6 @@ export default function createFormTemplate({ event, offers, destinations }) {
             type="text" name="event-end-time"
             value="${humanizeTaskDueDate(data.dateTo, DATE_FORMAT.dateTime)}">
           </div>
-
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-${data.id}">
               <span class="visually-hidden">Price</span>
@@ -143,7 +137,6 @@ export default function createFormTemplate({ event, offers, destinations }) {
             id="event-price-${data.id}"
             type="text" name="event-price" value="${data.basePrice}">
           </div>
-
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">Delete</button>
           <button class="event__rollup-btn" type="button">
@@ -155,7 +148,6 @@ export default function createFormTemplate({ event, offers, destinations }) {
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
             ${data.offers && createOffersListTemplate({ eventOffersId: data.offers, type: data.type, offers: offers })}
           </section>
-
           ${data.destination && `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         ${currentDestination.description && `<p class="event__destination-description">${currentDestination.description}</p>`}
