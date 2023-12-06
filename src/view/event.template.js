@@ -17,7 +17,7 @@ function createOffersListTemplate(offers) {
 
 export default function createEventTemplate({ event, offers, destination }) {
   return (
-    `<li class="trip-events__item" style="list-style-type: none">
+    `<li class="trip-events__item">
         <div class="event">
           <time class="event__date" datetime="2019-03-18">${humanizeTaskDueDate(event.dateFrom, DATE_FORMAT.pointDay)}</time>
           <div class="event__type">
