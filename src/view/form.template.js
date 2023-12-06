@@ -94,7 +94,7 @@ export default function createFormTemplate({ event, offers, destinations }) {
   const currentDestination = data.destination ? getById(data.destination, destinations) : data.destination;
 
   return (
-    ` <li class="trip-events__item" style="list-style-type: none">
+    ` <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           ${createTypeListTemplate({ eventId: data.id, eventType: data.type, types: offers })}

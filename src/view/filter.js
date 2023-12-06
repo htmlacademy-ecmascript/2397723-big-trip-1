@@ -1,7 +1,6 @@
 import createFilterTemplate from './filter.template';
 import AbstractView from '../framework/view/abstract-view';
 
-
 const FILTERS = [
   {
     name: 'everything',

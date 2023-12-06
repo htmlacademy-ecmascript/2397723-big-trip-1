@@ -1,4 +1,4 @@
-import { render, RenderPosition, replace } from '../framework/render';
+import { render, replace } from '../framework/render';
 import SortView from '../view/sort';
 import EventView from '../view/event';
 import EventsBoardView from '../view/events-board';
@@ -35,7 +35,7 @@ export default class TripEventsPresenter {
       for (const event of this.#events) {
         this.#renderEvent({ event: event, offers: this.#offers, destinations: this.#destinations });
       }
-      // render(new FormView({ offers: this.#offers, destinations: this.#destinations }), this.eventsBoard.element, RenderPosition.AFTERBEGIN);
+      // TODO render(new FormView({ offers: this.#offers, destinations: this.#destinations }), this.eventsBoard.element, RenderPosition.AFTERBEGIN);
     } else {
       render(new EmptyEventsListView('Everything'), this.#tripEventsContainer);
     }
@@ -85,6 +85,6 @@ export default class TripEventsPresenter {
       replace(eventComponent, eventEditComponent);
     }
 
-    render(eventComponent, this.#tripEventsContainer);
+    render(eventComponent, this.#eventsBoard.element);
   }
 }
