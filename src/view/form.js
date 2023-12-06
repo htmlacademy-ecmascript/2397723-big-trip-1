@@ -1,26 +1,42 @@
 import createFormTemplate from './form.template';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class FormView {
+export default class FormView extends AbstractView {
+  #event = null;
+  #offers = null;
+  #destinations = null;
+  #handleFormSubmit = null;
+  #handleFormClose = null;
 
-  constructor({event, offers, destinations}) {
-    this.event = event;
-    this.offers = offers;
-    this.destinations = destinations;
+  constructor({ event, offers, destinations, onFormSubmit, onFormClose }) {
+    super();
+    this.#event = event;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleFormClose = onFormClose;
+
+    this.element.querySelector('.event--edit')
+      .addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#formCloseHandler);
   }
 
-  getTemplate() {
-    return createFormTemplate({event: this.event, offers: this.offers, destinations: this.destinations});
+  get template() {
+    return createFormTemplate({
+      event: this.#event,
+      offers: this.#offers,
+      destinations: this.#destinations
+    });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-  removeElement() {
-    this.element = null;
-  }
+  #formCloseHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormClose();
+  };
 }

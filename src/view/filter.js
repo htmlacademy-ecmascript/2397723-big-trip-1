@@ -1,5 +1,6 @@
 import createFilterTemplate from './filter.template';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
+
 
 const FILTERS = [
   {
@@ -20,20 +21,10 @@ const FILTERS = [
   },
 ];
 
-export default class FilterView {
+export default class FilterView extends AbstractView {
+  #filters = FILTERS;
 
-  getTemplate() {
-    return createFilterTemplate(FILTERS);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createFilterTemplate(this.#filters);
   }
 }
