@@ -1,10 +1,15 @@
 import { render } from '../framework/render';
-import SortView from '../view/sort';
 import EventsBoardView from '../view/events-board';
 import EventPresenter from './event';
 import EmptyEventsListView from '../view/empty-events-list';
-import { updateItem } from '../utils';
+import SortPresenter from './sort';
+import { updateItem, sortTimeUp, sortPriceUp } from '../utils';
 
+const SORT = {
+  DAY: 'day',
+  TIME: 'time',
+  PRICE: 'price'
+};
 export default class TripEventsPresenter {
   #tripEventsContainer = null;
   #eventsModel = null;
@@ -17,6 +22,10 @@ export default class TripEventsPresenter {
 
   #eventPresenters = new Map();
 
+  #sortComponent = null;
+  #sourcedEvents = [];
+  #currentSortType = SORT.DAY;
+
   #eventsBoard = new EventsBoardView();
 
   constructor({ tripEventsContainer, eventsModel, offersModel, destinationsModel }) {
@@ -28,25 +37,59 @@ export default class TripEventsPresenter {
 
   init() {
     this.#events = [...this.#eventsModel.events];
+    this.#sourcedEvents = [...this.#eventsModel.events];
     this.#offers = [...this.#offersModel.offers];
     this.#destinations = [...this.#destinationsModel.destinations];
 
     if (this.#events && this.#events.length > 0) {
-      render(new SortView(), this.#tripEventsContainer);
+      this.#renderSort();
       render(this.#eventsBoard, this.#tripEventsContainer);
-      this.#events.forEach((event) => this.#renderEvent(event));
+      this.#renderEvents();
     } else {
       render(new EmptyEventsListView('Everything'), this.#tripEventsContainer);
     }
   }
 
+  #renderSort() {
+    this.#sortComponent = new SortPresenter({
+      boardComponent: this.#eventsBoard,
+      onSortOptionChange: this.#handleSortOptionChange
+    });
+    this.#sortComponent.init();
+  }
+
   #handleEventChange = (updatedEvent) => {
     this.#events = updateItem(this.#events, updatedEvent);
+    this.#sourcedEvents = updateItem(this.#sourcedEvents, updatedEvent);
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
   };
 
   #handleModeChange = () => {
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #sortEvents(sortType) {
+    switch (sortType) {
+      case SORT.TIME:
+        this.#events.sort(sortTimeUp);
+        break;
+      case SORT.PRICE:
+        this.#events.sort(sortPriceUp);
+        break;
+      default:
+        this.#events = this.#sourcedEvents;
+
+    }
+    this.#currentSortType = sortType;
+  }
+
+  #handleSortOptionChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    this.#sortEvents(sortType);
+    this.#clearEventsList();
+    this.#renderEvents();
   };
 
   #renderEvent(event) {
@@ -59,5 +102,13 @@ export default class TripEventsPresenter {
     });
     eventPresenter.init(event);
     this.#eventPresenters.set(event.id, eventPresenter);
+  }
+
+  #renderEvents() {
+    this.#events.forEach((event) => this.#renderEvent(event));
+  }
+
+  #clearEventsList() {
+    this.#eventPresenters.forEach((presenter) => presenter.destroy());
   }
 }

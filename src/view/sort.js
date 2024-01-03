@@ -30,8 +30,19 @@ const SORT_OPTIONS = [
 ];
 export default class SortView extends AbstractView {
   #sortOptions = SORT_OPTIONS;
+  #handlerSortClick;
+
+  constructor({ onSortClick }) {
+    super();
+    this.#handlerSortClick = onSortClick;
+    this.element.querySelectorAll('.trip-sort__btn').forEach((elem) => elem.addEventListener('click', this.#sortClickHandler));
+  }
 
   get template() {
     return createSortTemplate(this.#sortOptions);
   }
+
+  #sortClickHandler = (evt) => {
+    this.#handlerSortClick(evt.target.textContent.trim());
+  };
 }

@@ -1,5 +1,4 @@
-import { humanizeTaskDueDate, DATE_FORMAT } from '../utils';
-import dayjs from 'dayjs';
+import { humanizeTaskDueDate, calculateDuration, DATE_FORMAT } from '../utils';
 
 function createOffersListTemplate(offers) {
   return (
@@ -31,7 +30,7 @@ export default function createEventTemplate({ event, offers, destination }) {
               <time class="event__end-time" datetime="${event.dateTo}">${humanizeTaskDueDate(event.dateTo, DATE_FORMAT.pointTime)}</time>
             </p>
             <p class="event__duration">
-            ${dayjs(new Date(event.dateFrom)).subtract(new Date(event.dateTo)).format(DATE_FORMAT.subtractDate)}
+            ${calculateDuration(event.dateFrom, event.dateTo, DATE_FORMAT.duration)}
             </p>
           </div>
           <p class="event__price">
