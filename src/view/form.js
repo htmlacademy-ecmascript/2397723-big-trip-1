@@ -32,7 +32,7 @@ export default class FormView extends AbstractView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this.#event);
   };
 
   #formCloseHandler = (evt) => {

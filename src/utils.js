@@ -50,3 +50,7 @@ export function getOffers(idsArray, offersArray) {
 export function getByKey(key, value, array) {
   return array.find((item) => item[key] === value);
 }
+
+export function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}
