@@ -21,7 +21,6 @@ export default class EventPresenter {
   #handleModeChange = null;
   #handleDataChange = null;
 
-
   constructor({ offers, destinations, eventsBoard, onDataChange, onModeChange }) {
     this.#offers = offers;
     this.#destinations = destinations;
@@ -77,8 +76,7 @@ export default class EventPresenter {
   }
 
   #getEventsDestination(id) {
-    const eventsDestination = getByKey('id', id, this.#destinations);
-    return eventsDestination;
+    return getByKey('id', id, this.#destinations);
   }
 
   #getEventsOffers({ type, ids }) {

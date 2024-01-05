@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter, humanizeTaskDueDate, DATE_FORMAT, getByKey, getById } from '../utils';
+import { capitalizeFirstLetter, humanizeTaskDueDate, DateFormat, getByKey, getById } from '../utils';
 
 const initialData = {
   id: '0',
@@ -118,14 +118,14 @@ export default function createFormTemplate({ event, offers, destinations }) {
             class="event__input  event__input--time"
             id="event-start-time-${data.id}"
             type="text" name="event-start-time"
-            value="${humanizeTaskDueDate(data.dateFrom, DATE_FORMAT.dateTime)}">
+            value="${humanizeTaskDueDate(data.dateFrom, DateFormat.DATE_TIME)}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-${data.id}">To</label>
             <input
             class="event__input  event__input--time"
             id="event-end-time-${data.id}"
             type="text" name="event-end-time"
-            value="${humanizeTaskDueDate(data.dateTo, DATE_FORMAT.dateTime)}">
+            value="${humanizeTaskDueDate(data.dateTo, DateFormat.DATE_TIME)}">
           </div>
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-${data.id}">

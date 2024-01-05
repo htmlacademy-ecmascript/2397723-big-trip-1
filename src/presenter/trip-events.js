@@ -3,9 +3,9 @@ import EventsBoardView from '../view/events-board';
 import EventPresenter from './event';
 import EmptyEventsListView from '../view/empty-events-list';
 import SortPresenter from './sort';
-import { updateItem, sortTimeUp, sortPriceUp } from '../utils';
+import { updateItemById, sortTimeUp, sortPriceUp } from '../utils';
 
-const SORT = {
+const Sort = {
   DAY: 'day',
   TIME: 'time',
   PRICE: 'price'
@@ -22,9 +22,9 @@ export default class TripEventsPresenter {
 
   #eventPresenters = new Map();
 
-  #sortComponent = null;
+  #sortPresenter = null;
   #sourcedEvents = [];
-  #currentSortType = SORT.DAY;
+  #currentSortType = Sort.DAY;
 
   #eventsBoard = new EventsBoardView();
 
@@ -51,16 +51,16 @@ export default class TripEventsPresenter {
   }
 
   #renderSort() {
-    this.#sortComponent = new SortPresenter({
+    this.#sortPresenter = new SortPresenter({
       boardComponent: this.#eventsBoard,
       onSortOptionChange: this.#handleSortOptionChange
     });
-    this.#sortComponent.init();
+    this.#sortPresenter.init();
   }
 
   #handleEventChange = (updatedEvent) => {
-    this.#events = updateItem(this.#events, updatedEvent);
-    this.#sourcedEvents = updateItem(this.#sourcedEvents, updatedEvent);
+    this.#events = updateItemById(this.#events, updatedEvent);
+    this.#sourcedEvents = updateItemById(this.#sourcedEvents, updatedEvent);
     this.#eventPresenters.get(updatedEvent.id).init(updatedEvent);
   };
 
@@ -70,15 +70,14 @@ export default class TripEventsPresenter {
 
   #sortEvents(sortType) {
     switch (sortType) {
-      case SORT.TIME:
+      case Sort.TIME:
         this.#events.sort(sortTimeUp);
         break;
-      case SORT.PRICE:
+      case Sort.PRICE:
         this.#events.sort(sortPriceUp);
         break;
       default:
         this.#events = this.#sourcedEvents;
-
     }
     this.#currentSortType = sortType;
   }
