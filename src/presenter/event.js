@@ -88,13 +88,13 @@ export default class EventPresenter {
     return eventsOffers;
   }
 
-  #escKeyDownHandler(evt) {
+  #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceEventToForm();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
-  }
+  };
 
   #handleEditClick = () => {
     this.#replaceFormToEvent();
