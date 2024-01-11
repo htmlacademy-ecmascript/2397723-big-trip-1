@@ -97,3 +97,13 @@ export function sortPriceUp(eventA, eventB) {
   const priceB = eventB.basePrice;
   return priceB - priceA;
 }
+
+/**
+ * @param {string} idString
+ * @param {number} trimmingPartsCount
+ */
+export function trimPrefixFromIdString(idString, trimmingPartsCount = 2) {
+  const reg = `([a-z]*-){${trimmingPartsCount}}`;
+  const trimmingPart = new RegExp(reg);
+  return idString.replace(trimmingPart, '');
+}
