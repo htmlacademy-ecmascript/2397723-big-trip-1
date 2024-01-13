@@ -1,4 +1,4 @@
-import { humanizeTaskDueDate, calculateDuration, DateFormat } from '../utils';
+import { humanizeDate, calculateDuration, DateFormat } from '../utils';
 
 function createOffersListTemplate(offers) {
   return (
@@ -18,16 +18,16 @@ export default function createEventTemplate({ event, offers, destination }) {
   return (
     `<li class="trip-events__item">
         <div class="event">
-          <time class="event__date" datetime="2019-03-18">${humanizeTaskDueDate(event.dateFrom, DateFormat.POINT_DAY)}</time>
+          <time class="event__date" datetime="2019-03-18">${humanizeDate(event.dateFrom, DateFormat.POINT_DAY)}</time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${event.type}.png" alt="Event type icon">
           </div>
           <h3 class="event__title">${event.type} ${destination.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime="${event.dateFrom}">${humanizeTaskDueDate(event.dateFrom, DateFormat.POINT_TIME)}</time>
+              <time class="event__start-time" datetime="${event.dateFrom}">${humanizeDate(event.dateFrom, DateFormat.POINT_TIME)}</time>
               &mdash;
-              <time class="event__end-time" datetime="${event.dateTo}">${humanizeTaskDueDate(event.dateTo, DateFormat.POINT_TIME)}</time>
+              <time class="event__end-time" datetime="${event.dateTo}">${humanizeDate(event.dateTo, DateFormat.POINT_TIME)}</time>
             </p>
             <p class="event__duration">
             ${calculateDuration(event.dateFrom, event.dateTo)}
