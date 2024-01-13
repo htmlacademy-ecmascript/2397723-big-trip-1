@@ -1,12 +1,27 @@
 import createFormTemplate from './form.template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import { getByKey, trimPrefixFromIdString } from '../utils';
+import 'flatpickr/dist/flatpickr.min.css';
+import { humanizeDate, DateFormat } from '../utils';
+
+import flatpickr from 'flatpickr';
+
+const datePickerDefaultOptions = {
+  dateFormat: 'd/m/y H:i',
+  enableTime: true,
+  locale: {
+    firstDayOfWeek: 1,
+  },
+  'time_24hr': true,
+};
 
 export default class FormView extends AbstractStatefulView {
   #offers = null;
   #destinations = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #datePickerFrom = null;
+  #datePickerTo = null;
 
   constructor({ event, offers, destinations, onFormSubmit, onFormClose }) {
     super();
@@ -32,6 +47,7 @@ export default class FormView extends AbstractStatefulView {
       .forEach((type) => type.addEventListener('change', this.#changeTypeHandler));
     this.element.querySelectorAll('.event__offer-checkbox')
       .forEach((type) => type.addEventListener('click', this.#changeOfferHandler));
+    this.#setDatepickers();
   }
 
   get template() {
@@ -75,4 +91,32 @@ export default class FormView extends AbstractStatefulView {
     const checkedOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     this._setState({ offers: checkedOffers.map((element) => trimPrefixFromIdString(element.id)) });
   };
+
+  #changeDateFromHandler = ([userDate]) => {
+    this._setState({ dateFrom: humanizeDate(userDate, DateFormat.FLATPICKR) });
+    this.#datePickerTo.set('minDate', this._state.dateFrom);
+  };
+
+  #changeDateToHandler = ([userDate]) => {
+    this._setState({ dateTo: humanizeDate(userDate, DateFormat.FLATPICKR) });
+    this.#datePickerFrom.set('maxDate', this._state.dateTo);
+  };
+
+  #setDatepickers() {
+    const [datePickerFrom, datePickerTo] = this.element.querySelectorAll('.event__input--time');
+
+    this.#datePickerFrom = flatpickr(datePickerFrom, {
+      ...datePickerDefaultOptions,
+      defaultDate: this._state.dateFrom,
+      maxDate: this._state.dateTo,
+      onClose: this.#changeDateFromHandler
+    });
+
+    this.#datePickerTo = flatpickr(datePickerTo, {
+      ...datePickerDefaultOptions,
+      defaultDate: this._state.dateTo,
+      minDate: this._state.dateFrom,
+      onClose: this.#changeDateToHandler
+    });
+  }
 }
