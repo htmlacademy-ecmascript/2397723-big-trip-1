@@ -9,8 +9,8 @@ export default function createSortTemplate(sortOptions) {
             type="radio"
             name="trip-sort"
             value="sort-${option.name}"
-            ${option.isChecked && 'checked'}
-            ${option.isDisable && 'disabled'}
+            ${option.isChecked ? 'checked' : ''}
+            ${option.isDisable ? 'disabled' : ''}
             >
           <label
             class="trip-sort__btn"

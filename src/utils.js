@@ -2,10 +2,13 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
-export const DATE_FORMAT = {
-  pointTime: 'HH:mm',
-  pointDay: 'MMM DD',
-  duration: 'HH[H] mm[M]'
+export const DateFormat = {
+  POINT_TIME: 'HH:mm',
+  POINT_DAY: 'MMM DD',
+  DURATION_DAYS: 'DD[D] HH[H] mm[M]',
+  DURATION_HOURS: 'HH[H] mm[M]',
+  DURATION_MINUTES: 'mm[M]',
+  DATE_TIME: 'DD/MM/YY HH:mm',
 };
 
 /**
@@ -19,13 +22,18 @@ export function humanizeTaskDueDate(dueDate, dateFormat) {
 /**
  * @param {string} start
  * @param {string} finish
- * @param {string} dateFormat
  */
-export function calculateDuration(start, finish, dateFormat) {
+export function calculateDuration(start, finish) {
   const startDate = dayjs(start);
   const finishDate = dayjs(finish);
   const eventDuration = dayjs.duration(finishDate.diff(startDate));
-  return eventDuration.format(dateFormat);
+  if (eventDuration.days() === 0 && eventDuration.hours() === 0) {
+    return eventDuration.format(DateFormat.DURATION_MINUTES);
+  }
+  if (eventDuration.days() === 0) {
+    return eventDuration.format(DateFormat.DURATION_HOURS);
+  }
+  return eventDuration.format(DateFormat.DURATION_DAYS);
 }
 
 /**
@@ -66,8 +74,8 @@ export function getByKey(key, value, array) {
  * @param {Array} items
  * @param {AbstractView} update
  */
-export function updateItem(items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
+export function updateItemById(items, updatedItem) {
+  return items.map((item) => item.id === updatedItem.id ? updatedItem : item);
 }
 
 /**
@@ -88,4 +96,14 @@ export function sortPriceUp(eventA, eventB) {
   const priceA = eventA.basePrice;
   const priceB = eventB.basePrice;
   return priceB - priceA;
+}
+
+/**
+ * @param {string} idString
+ * @param {number} trimmingPartsCount
+ */
+export function trimPrefixFromIdString(idString, trimmingPartsCount = 2) {
+  const reg = `([a-z]*-){${trimmingPartsCount}}`;
+  const trimmingPart = new RegExp(reg);
+  return idString.replace(trimmingPart, '');
 }

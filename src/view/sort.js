@@ -28,6 +28,7 @@ const SORT_OPTIONS = [
     isChecked: false
   },
 ];
+
 export default class SortView extends AbstractView {
   #sortOptions = SORT_OPTIONS;
   #handlerSortClick;
