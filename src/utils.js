@@ -9,14 +9,15 @@ export const DateFormat = {
   DURATION_HOURS: 'HH[H] mm[M]',
   DURATION_MINUTES: 'mm[M]',
   DATE_TIME: 'DD/MM/YY HH:mm',
+  FLATPICKR: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'
 };
 
 /**
  * @param {string} dueDate
  * @param {string} dateFormat
  */
-export function humanizeTaskDueDate(dueDate, dateFormat) {
-  return dueDate ? dayjs(dueDate).format(dateFormat) : '';
+export function humanizeDate(date, dateFormat) {
+  return date ? dayjs(date).format(dateFormat) : '';
 }
 
 /**

@@ -46,14 +46,6 @@ export default class EventPresenter {
       onFavoriteClick: this.#handleFavoriteClick
     });
 
-    this.#formComponent = new FormView({
-      event: this.#event,
-      offers: this.#offers,
-      destinations: this.#destinations,
-      onFormSubmit: this.#handleFormSubmit,
-      onFormClose: this.#handleFormClose
-    });
-
     if (prevEventComponent === null || prevFormComponent === null) {
       render(this.#eventComponent, this.#eventsBoard);
       return;
@@ -97,6 +89,13 @@ export default class EventPresenter {
   };
 
   #handleEditClick = () => {
+    this.#formComponent = new FormView({
+      event: this.#event,
+      offers: this.#offers,
+      destinations: this.#destinations,
+      onFormSubmit: this.#handleFormSubmit,
+      onFormClose: this.#handleFormClose
+    });
     this.#replaceFormToEvent();
   };
 
