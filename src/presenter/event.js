@@ -2,6 +2,7 @@ import { getByKey, getById } from '../utils';
 import { render, replace, remove } from '../framework/render';
 import EventView from '../view/event';
 import FormView from '../view/form';
+import { UserAction, UpdateType } from '../const';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -54,15 +55,17 @@ export default class EventPresenter {
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#eventComponent, prevEventComponent);
     }
+
     if (this.#mode === Mode.EDITING) {
       replace(this.#formComponent, prevFormComponent);
     }
+
     remove(prevEventComponent);
     remove(prevFormComponent);
   }
 
   resetView() {
-    if(this.#mode !== Mode.DEFAULT) {
+    if (this.#mode !== Mode.DEFAULT) {
       this.#replaceEventToForm();
     }
   }
@@ -104,11 +107,19 @@ export default class EventPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({ ...this.#event, isFavorite: !this.#event.isFavorite });
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      { ...this.#event, isFavorite: !this.#event.isFavorite }
+    );
   };
 
   #handleFormSubmit = (event) => {
-    this.#handleDataChange(event);
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      event
+    );
     this.#replaceEventToForm();
   };
 

@@ -1,7 +1,8 @@
+import Observable from '../framework/observable';
 import offers from '../mock/offers.json';
 import { getById, getByKey } from '../utils';
 
-export default class OffersModel {
+export default class OffersModel extends Observable {
   #offers = offers;
 
   get offers() {
