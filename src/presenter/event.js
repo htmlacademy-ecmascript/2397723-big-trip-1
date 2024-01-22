@@ -97,7 +97,8 @@ export default class EventPresenter {
       offers: this.#offers,
       destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
-      onFormClose: this.#handleFormClose
+      onFormClose: this.#handleFormClose,
+      onResetClick: this.#handleFormDelete
     });
     this.#replaceFormToEvent();
   };
@@ -121,6 +122,14 @@ export default class EventPresenter {
       event
     );
     this.#replaceEventToForm();
+  };
+
+  #handleFormDelete = (event) => {
+    this.#handleDataChange(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
+      event
+    );
   };
 
   #replaceFormToEvent() {

@@ -20,16 +20,18 @@ export default class FormView extends AbstractStatefulView {
   #destinations = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #handlerResetClick = null;
   #datePickerFrom = null;
   #datePickerTo = null;
 
-  constructor({ event, offers, destinations, onFormSubmit, onFormClose }) {
+  constructor({ event, offers, destinations, onFormSubmit, onFormClose, onResetClick }) {
     super();
     this._setState(event);
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
+    this.#handlerResetClick = onResetClick;
 
     this._restoreHandlers();
   }
@@ -47,6 +49,8 @@ export default class FormView extends AbstractStatefulView {
       .forEach((type) => type.addEventListener('change', this.#changeTypeHandler));
     this.element.querySelectorAll('.event__offer-checkbox')
       .forEach((type) => type.addEventListener('click', this.#changeOfferHandler));
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#resetClickHandler);
     this.#setDatepickers();
   }
 
@@ -66,6 +70,11 @@ export default class FormView extends AbstractStatefulView {
   #formCloseHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormClose();
+  };
+
+  #resetClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handlerResetClick(this._state);
   };
 
   #changeTypeHandler = (evt) => {
