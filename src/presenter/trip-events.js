@@ -3,8 +3,8 @@ import EventsBoardView from '../view/events-board';
 import EventPresenter from './event';
 import EmptyEventsListView from '../view/empty-events-list';
 import SortPresenter from './sort';
-import { sortTimeUp, sortPriceUp } from '../utils';
-import { UserAction, UpdateType } from '../const';
+import { sortDateDown, sortTimeUp, sortPriceUp, filter } from '../utils';
+import { UserAction, UpdateType, FilterType } from '../const';
 
 const Sort = {
   DAY: 'day',
@@ -13,9 +13,10 @@ const Sort = {
 };
 export default class TripEventsPresenter {
   #tripEventsContainer = null;
-  #eventsModel = null;
+  #eventModel = null;
   #offersModel = null;
   #destinationsModel = null;
+  #filterModel = null;
 
   #offers = [];
   #destinations = [];
@@ -24,25 +25,35 @@ export default class TripEventsPresenter {
 
   #sortPresenter = null;
   #currentSortType = Sort.DAY;
+  #filterType = FilterType.EVERYTHING;
 
   #eventsBoard = new EventsBoardView();
 
-  constructor({ tripEventsContainer, eventsModel, offersModel, destinationsModel }) {
+  constructor({ tripEventsContainer, eventModel, offersModel, destinationsModel, filterModel }) {
     this.#tripEventsContainer = tripEventsContainer;
-    this.#eventsModel = eventsModel;
+    this.#eventModel = eventModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-    this.#eventsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel = filterModel;
+
+    this.#eventModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get events() {
+    this.#filterType = this.#filterModel.filter;
+    const events = this.#eventModel.events;
+    const filteredEvents = filter[this.#filterType](events);
+
     switch (this.#currentSortType) {
+      case Sort.DAY:
+        return filteredEvents.sort(sortDateDown);
       case Sort.TIME:
-        return [...this.#eventsModel.events].sort(sortTimeUp);
+        return filteredEvents.sort(sortTimeUp);
       case Sort.PRICE:
-        return [...this.#eventsModel.events].sort(sortPriceUp);
+        return filteredEvents.sort(sortPriceUp);
     }
-    return this.#eventsModel.events;
+    return filteredEvents;
   }
 
   get offers() {
@@ -68,6 +79,7 @@ export default class TripEventsPresenter {
 
   #renderSort() {
     this.#sortPresenter = new SortPresenter({
+      currentSortType: this.#currentSortType,
       boardComponent: this.#eventsBoard,
       onSortOptionChange: this.#handleSortOptionChange
     });
@@ -77,13 +89,13 @@ export default class TripEventsPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_EVENT:
-        this.#eventsModel.updateEvent(updateType, update);
+        this.#eventModel.updateEvent(updateType, update);
         break;
       case UserAction.ADD_EVENT:
-        this.#eventsModel.addEvent(updateType, update);
+        this.#eventModel.addEvent(updateType, update);
         break;
       case UserAction.DELETE_EVENT:
-        this.#eventsModel.deleteEvent(updateType, update);
+        this.#eventModel.deleteEvent(updateType, update);
         break;
     }
   };
@@ -94,10 +106,12 @@ export default class TripEventsPresenter {
         this.#eventPresenters.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        this.#clearEventsList();
+        this.#clearEventsList({ resetSortType: false });
         this.#renderEvents();
         break;
       case UpdateType.MAJOR:
+        this.#clearEventsList({ resetSortType: true });
+        this.#renderEvents();
         break;
     }
   };
@@ -111,7 +125,7 @@ export default class TripEventsPresenter {
       return;
     }
     this.#currentSortType = sortType;
-    this.#clearEventsList();
+    this.#clearEventsList({ resetSortType: false });
     this.#renderEvents();
   };
 
@@ -131,7 +145,12 @@ export default class TripEventsPresenter {
     this.events.forEach((event) => this.#renderEvent(event));
   }
 
-  #clearEventsList() {
+  #clearEventsList({ resetSortType }) {
+    if (resetSortType) {
+      this.#sortPresenter.destroy();
+      this.#currentSortType = Sort.DAY;
+      this.#sortPresenter.init();
+    }
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
   }
 }

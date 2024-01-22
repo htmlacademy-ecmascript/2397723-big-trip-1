@@ -1,4 +1,4 @@
-export default function createSortTemplate(sortOptions) {
+export default function createSortTemplate(sortOptions, currentSortType) {
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       ${sortOptions.map((option) => (
@@ -9,7 +9,7 @@ export default function createSortTemplate(sortOptions) {
             type="radio"
             name="trip-sort"
             value="sort-${option.name}"
-            ${option.isChecked ? 'checked' : ''}
+            ${option.name === currentSortType ? 'checked' : ''}
             ${option.isDisable ? 'disabled' : ''}
             >
           <label
