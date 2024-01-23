@@ -118,7 +118,7 @@ export default function createFormTemplate({ event, offers, destinations, isEdit
             <input
             class="event__input  event__input--price"
             id="event-price-${event.id}"
-            type="text" name="event-price" value="${event.basePrice}">
+            type="number" autocomplete="off" name="event-price" value="${event.basePrice}">
           </div>
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">${isEditForm ? 'Delete' : 'Cancel'}</button>
