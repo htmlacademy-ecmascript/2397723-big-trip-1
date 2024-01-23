@@ -15,6 +15,17 @@ const datePickerDefaultOptions = {
   'time_24hr': true,
 };
 
+const initialState = {
+  id: '0',
+  type: 'taxi',
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  basePrice: '',
+  isFavorite: false,
+  offers: []
+};
+
 export default class FormView extends AbstractStatefulView {
   #offers = null;
   #destinations = null;
@@ -24,11 +35,19 @@ export default class FormView extends AbstractStatefulView {
   #datePickerFrom = null;
   #datePickerTo = null;
 
-  constructor({ event, offers, destinations, onFormSubmit, onFormClose, onResetClick }) {
+  #initialState = initialState;
+  #isEditForm;
+
+  constructor({ event, offers, destinations, isEditForm = true, onFormSubmit, onFormClose, onResetClick }) {
     super();
-    this._setState(event);
+    if (isEditForm) {
+      this._setState(event);
+    } else {
+      this._setState(this.#initialState);
+    }
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#isEditForm = isEditForm;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
     this.#handlerResetClick = onResetClick;
@@ -39,8 +58,10 @@ export default class FormView extends AbstractStatefulView {
   _restoreHandlers() {
     this.element.querySelector('.event--edit')
       .addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#formCloseHandler);
+    if (this.#isEditForm) {
+      this.element.querySelector('.event__rollup-btn')
+        .addEventListener('click', this.#formCloseHandler);
+    }
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#changeDestinationHandler);
     this.element.querySelector('.event__input--price')
@@ -58,7 +79,8 @@ export default class FormView extends AbstractStatefulView {
     return createFormTemplate({
       event: this._state,
       offers: this.#offers,
-      destinations: this.#destinations
+      destinations: this.#destinations,
+      isEditForm: this.#isEditForm
     });
   }
 

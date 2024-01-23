@@ -5,6 +5,7 @@ import EmptyEventsListView from '../view/empty-events-list';
 import SortPresenter from './sort';
 import { sortDateDown, sortTimeUp, sortPriceUp, filter } from '../utils';
 import { UserAction, UpdateType, FilterType } from '../const';
+import NewEventPresenter from './new-event-presenter';
 
 const Sort = {
   DAY: 'day',
@@ -24,17 +25,27 @@ export default class TripEventsPresenter {
   #eventPresenters = new Map();
 
   #sortPresenter = null;
+  #newEventPresenter = null;
+
   #currentSortType = Sort.DAY;
   #filterType = FilterType.EVERYTHING;
 
   #eventsBoard = new EventsBoardView();
 
-  constructor({ tripEventsContainer, eventModel, offersModel, destinationsModel, filterModel }) {
+  constructor({ tripEventsContainer, eventModel, offersModel, destinationsModel, filterModel, onNewEventDestroy }) {
     this.#tripEventsContainer = tripEventsContainer;
     this.#eventModel = eventModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
+
+    this.#newEventPresenter = new NewEventPresenter({
+      newEventFormContainer: this.#eventsBoard.element,
+      offers: this.offers,
+      destinations: this.destinations,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewEventDestroy
+    });
 
     this.#eventModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -77,10 +88,16 @@ export default class TripEventsPresenter {
     }
   }
 
+  createEvent() {
+    this.#currentSortType = Sort.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newEventPresenter.init();
+  }
+
   #renderSort() {
     this.#sortPresenter = new SortPresenter({
       currentSortType: this.#currentSortType,
-      boardComponent: this.#eventsBoard,
+      boardComponent: this.#tripEventsContainer,
       onSortOptionChange: this.#handleSortOptionChange
     });
     this.#sortPresenter.init();
@@ -117,6 +134,7 @@ export default class TripEventsPresenter {
   };
 
   #handleModeChange = () => {
+    this.#newEventPresenter.destroy();
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -151,6 +169,7 @@ export default class TripEventsPresenter {
       this.#currentSortType = Sort.DAY;
       this.#sortPresenter.init();
     }
+    this.#newEventPresenter.destroy();
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
   }
 }

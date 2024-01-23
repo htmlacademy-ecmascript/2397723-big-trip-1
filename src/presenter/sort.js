@@ -1,4 +1,4 @@
-import { remove, render } from '../framework/render';
+import { remove, render, RenderPosition } from '../framework/render';
 import SortView from '../view/sort';
 
 export default class SortPresenter {
@@ -23,7 +23,7 @@ export default class SortPresenter {
 
   #renderSort () {
     this.#sortComponent = new SortView({ currentSortType: this.#currentSortType, onSortClick: this.#sortClick});
-    render(this.#sortComponent, this.#boardComponent.element);
+    render(this.#sortComponent, this.#boardComponent, RenderPosition.AFTERBEGIN);
   }
 
   destroy() {
