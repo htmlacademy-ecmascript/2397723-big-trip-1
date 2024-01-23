@@ -18,6 +18,7 @@ function createTypeListTemplate({ eventId, eventType, types }) {
             id="event-type-${type.type}-${eventId}"
             class="event__type-input  visually-hidden"
             type="radio"
+            required
             name="event-type"
             value="${type.type}"
             ${type.type === eventType ? 'checked' : ''}>
@@ -88,7 +89,9 @@ export default function createFormTemplate({ event, offers, destinations, isEdit
             <input
             class="event__input  event__input--destination"
             id="event-destination-${event.id}"
-            type="text" name="event-destination"
+            type="text"
+            name="event-destination"
+            required
             value="${currentDestination ? currentDestination.name : ''}"
             list="destination-list-${event.id}">
             <datalist id="destination-list-${event.id}">
@@ -101,6 +104,7 @@ export default function createFormTemplate({ event, offers, destinations, isEdit
             class="event__input  event__input--time"
             id="event-start-time-${event.id}"
             type="text" name="event-start-time"
+            required
             value="${humanizeDate(event.dateFrom, DateFormat.DATE_TIME)}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-${event.id}">To</label>
@@ -108,6 +112,7 @@ export default function createFormTemplate({ event, offers, destinations, isEdit
             class="event__input  event__input--time"
             id="event-end-time-${event.id}"
             type="text" name="event-end-time"
+            required
             value="${humanizeDate(event.dateTo, DateFormat.DATE_TIME)}">
           </div>
           <div class="event__field-group  event__field-group--price">
@@ -118,7 +123,11 @@ export default function createFormTemplate({ event, offers, destinations, isEdit
             <input
             class="event__input  event__input--price"
             id="event-price-${event.id}"
-            type="number" autocomplete="off" name="event-price" value="${event.basePrice}">
+            type="number"
+            required
+            autocomplete="off"
+            name="event-price"
+            value="${event.basePrice}">
           </div>
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">${isEditForm ? 'Delete' : 'Cancel'}</button>

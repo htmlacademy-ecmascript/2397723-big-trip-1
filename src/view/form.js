@@ -9,6 +9,7 @@ import flatpickr from 'flatpickr';
 const datePickerDefaultOptions = {
   dateFormat: 'd/m/y H:i',
   enableTime: true,
+  allowInput:true,
   locale: {
     firstDayOfWeek: 1,
   },
