@@ -7,14 +7,14 @@ export default class NewEventPresenter {
   #offers = null;
   #destinations = null;
 
-  #newEventFormContainer = null;
+  #eventsBoard = null;
   #handleDataChange = null;
   #handleDestroy = null;
 
   #formComponent = null;
 
-  constructor({newEventFormContainer, offers, destinations, onDataChange, onDestroy}) {
-    this.#newEventFormContainer = newEventFormContainer;
+  constructor({eventsBoard, offers, destinations, onDataChange, onDestroy}) {
+    this.#eventsBoard = eventsBoard;
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleDataChange = onDataChange;
@@ -31,10 +31,10 @@ export default class NewEventPresenter {
       destinations: this.#destinations,
       isEditForm: false,
       onFormSubmit: this.#handleFormSubmit,
-      onResetClick: this.#handleDeleteClick
+      onResetClick: this.#handleResetClick
     });
-
-    render(this.#formComponent, this.#newEventFormContainer, RenderPosition.AFTERBEGIN);
+    console.log(this.#eventsBoard)
+    render(this.#formComponent, this.#eventsBoard.element, RenderPosition.BEFOREBEGIN);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
@@ -61,7 +61,7 @@ export default class NewEventPresenter {
     );
   };
 
-  #handleDeleteClick = () => {
+  #handleResetClick = () => {
     this.destroy();
   };
 

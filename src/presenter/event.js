@@ -48,7 +48,7 @@ export default class EventPresenter {
     });
 
     if (prevEventComponent === null || prevFormComponent === null) {
-      render(this.#eventComponent, this.#eventsBoard);
+      render(this.#eventComponent, this.#eventsBoard.element);
       return;
     }
 
