@@ -1,11 +1,14 @@
-import { render } from '../framework/render';
+import { remove, render, RenderPosition } from '../framework/render';
 import SortView from '../view/sort';
 
 export default class SortPresenter {
   #boardComponent = null;
+  #sortComponent = null;
   #handlerSortOptionChange = null;
+  #currentSortType;
 
-  constructor({ boardComponent, onSortOptionChange }) {
+  constructor({ currentSortType, boardComponent, onSortOptionChange }) {
+    this.#currentSortType = currentSortType;
     this.#boardComponent = boardComponent;
     this.#handlerSortOptionChange = onSortOptionChange;
   }
@@ -19,7 +22,11 @@ export default class SortPresenter {
   };
 
   #renderSort () {
-    const sortComponent = new SortView({ onSortClick: this.#sortClick});
-    render(sortComponent, this.#boardComponent.element);
+    this.#sortComponent = new SortView({ currentSortType: this.#currentSortType, onSortClick: this.#sortClick});
+    render(this.#sortComponent, this.#boardComponent, RenderPosition.AFTERBEGIN);
+  }
+
+  destroy() {
+    remove(this.#sortComponent);
   }
 }

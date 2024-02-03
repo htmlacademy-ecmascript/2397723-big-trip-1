@@ -9,10 +9,22 @@ import flatpickr from 'flatpickr';
 const datePickerDefaultOptions = {
   dateFormat: 'd/m/y H:i',
   enableTime: true,
+  allowInput:true,
   locale: {
     firstDayOfWeek: 1,
   },
   'time_24hr': true,
+};
+
+const initialState = {
+  id: '0',
+  type: 'taxi',
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  basePrice: '',
+  isFavorite: false,
+  offers: []
 };
 
 export default class FormView extends AbstractStatefulView {
@@ -20,16 +32,26 @@ export default class FormView extends AbstractStatefulView {
   #destinations = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #handlerResetClick = null;
   #datePickerFrom = null;
   #datePickerTo = null;
 
-  constructor({ event, offers, destinations, onFormSubmit, onFormClose }) {
+  #initialState = initialState;
+  #isEditForm;
+
+  constructor({ event, offers, destinations, isEditForm = true, onFormSubmit, onFormClose, onResetClick }) {
     super();
-    this._setState(event);
+    if (isEditForm) {
+      this._setState(event);
+    } else {
+      this._setState(this.#initialState);
+    }
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#isEditForm = isEditForm;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
+    this.#handlerResetClick = onResetClick;
 
     this._restoreHandlers();
   }
@@ -37,8 +59,10 @@ export default class FormView extends AbstractStatefulView {
   _restoreHandlers() {
     this.element.querySelector('.event--edit')
       .addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#formCloseHandler);
+    if (this.#isEditForm) {
+      this.element.querySelector('.event__rollup-btn')
+        .addEventListener('click', this.#formCloseHandler);
+    }
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#changeDestinationHandler);
     this.element.querySelector('.event__input--price')
@@ -47,6 +71,8 @@ export default class FormView extends AbstractStatefulView {
       .forEach((type) => type.addEventListener('change', this.#changeTypeHandler));
     this.element.querySelectorAll('.event__offer-checkbox')
       .forEach((type) => type.addEventListener('click', this.#changeOfferHandler));
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#resetClickHandler);
     this.#setDatepickers();
   }
 
@@ -54,7 +80,8 @@ export default class FormView extends AbstractStatefulView {
     return createFormTemplate({
       event: this._state,
       offers: this.#offers,
-      destinations: this.#destinations
+      destinations: this.#destinations,
+      isEditForm: this.#isEditForm
     });
   }
 
@@ -66,6 +93,11 @@ export default class FormView extends AbstractStatefulView {
   #formCloseHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormClose();
+  };
+
+  #resetClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handlerResetClick(this._state);
   };
 
   #changeTypeHandler = (evt) => {

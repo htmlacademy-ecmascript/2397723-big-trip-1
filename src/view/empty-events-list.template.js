@@ -1,8 +1,8 @@
 const OPTIONS = {
-  'Everything': 'Click New Event to create your first point',
-  'Past': 'There are no past events now',
-  'Present': 'There are no present events now',
-  'Future': 'There are no future events now',
+  'everything': 'Click New Event to create your first point',
+  'past': 'There are no past events now',
+  'present': 'There are no present events now',
+  'future': 'There are no future events now',
 };
 
 

@@ -1,3 +1,4 @@
+import { FilterType } from './const';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
@@ -80,8 +81,16 @@ export function updateItemById(items, updatedItem) {
 }
 
 /**
- * @param {string} eventA
- * @param {string} eventB
+ * @param {Object} eventA
+ * @param {Object} eventB
+ */
+export function sortDateDown(eventA, eventB) {
+  return dayjs(eventA.dateFrom).diff(dayjs(eventB.dateFrom));
+}
+
+/**
+ * @param {Object} eventA
+ * @param {Object} eventB
  */
 export function sortTimeUp(eventA, eventB) {
   const durationA = dayjs.duration(dayjs(eventA.dateTo).diff(dayjs(eventA.dateFrom)));
@@ -90,8 +99,8 @@ export function sortTimeUp(eventA, eventB) {
 }
 
 /**
- * @param {string} eventA
- * @param {string} eventB
+ * @param {Object} eventA
+ * @param {Object} eventB
  */
 export function sortPriceUp(eventA, eventB) {
   const priceA = eventA.basePrice;
@@ -108,3 +117,22 @@ export function trimPrefixFromIdString(idString, trimmingPartsCount = 2) {
   const trimmingPart = new RegExp(reg);
   return idString.replace(trimmingPart, '');
 }
+
+function isEventAfter(date) {
+  return date && dayjs(date).isAfter(dayjs(), 'D');
+}
+
+function isEventToday(date) {
+  return date && dayjs(date).isSame(dayjs(), 'D');
+}
+
+function isEventBefore(date) {
+  return date && dayjs(date).isBefore(dayjs(), 'D');
+}
+
+export const filter = {
+  [FilterType.EVERYTHING]: (events) => events,
+  [FilterType.FUTURE]: (events) => events.filter((event) => isEventAfter(event.dateFrom)),
+  [FilterType.PRESENT]: (events) => events.filter((event) => isEventToday(event.dateFrom)),
+  [FilterType.PAST]: (events) => events.filter((event) => isEventBefore(event.dateTo)),
+};

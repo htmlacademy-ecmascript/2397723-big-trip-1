@@ -1,16 +1,5 @@
 import { capitalizeFirstLetter, humanizeDate, DateFormat, getByKey, getById } from '../utils';
 
-const initialData = {
-  id: '0',
-  type: 'taxi',
-  dateFrom: '',
-  dateTo: '',
-  destination: '',
-  basePrice: '',
-  isFavorite: false,
-  offers: []
-};
-
 function createTypeListTemplate({ eventId, eventType, types }) {
   return (
     `<div class="event__type-wrapper">
@@ -29,6 +18,7 @@ function createTypeListTemplate({ eventId, eventType, types }) {
             id="event-type-${type.type}-${eventId}"
             class="event__type-input  visually-hidden"
             type="radio"
+            required
             name="event-type"
             value="${type.type}"
             ${type.type === eventType ? 'checked' : ''}>
@@ -48,7 +38,9 @@ function createTypeListTemplate({ eventId, eventType, types }) {
 function createOffersListTemplate({ eventOffersId = [], type, offers }) {
   const offersList = getByKey('type', type, offers).offers;
   return (
-    `<div class="event__available-offers">
+    `<section class="event__section  event__section--offers">
+    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+    <div class="event__available-offers">
       ${offersList.map((item) => (
       `<div class="event__offer-selector">
         <input
@@ -64,7 +56,8 @@ function createOffersListTemplate({ eventOffersId = [], type, offers }) {
         </label>
       </div>`
     )).join('')}
-    </div>`
+    </div>
+    </section>`
   );
 }
 
@@ -76,79 +69,73 @@ function createDestinationsTemplate(destinations) {
   );
 }
 
-export default function createFormTemplate({ event, offers, destinations }) {
-  let data = initialData;
+function createRollupButtonTemplate() {
+  return '<button class="event__rollup-btn" type="button"><span class="visually-hidden">Open event</span></button>';
+}
 
-  if (event) {
-    data = {
-      id: event.id,
-      type: event.type,
-      dateFrom: event.dateFrom,
-      dateTo: event.dateTo,
-      destination: event.destination,
-      basePrice: event.basePrice,
-      isFavorite: false,
-      offers: event.offers
-    };
-  }
-  const currentDestination = data.destination ? getById(data.destination, destinations) : data.destination;
+export default function createFormTemplate({ event, offers, destinations, isEditForm }) {
+
+  const currentDestination = event.destination ? getById(event.destination, destinations) : event.destination;
 
   return (
     ` <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
-          ${createTypeListTemplate({ eventId: data.id, eventType: data.type, types: offers })}
+          ${createTypeListTemplate({ eventId: event.id, eventType: event.type, types: offers })}
           <div class="event__field-group  event__field-group--destination">
-            <label class="event__label  event__type-output" for="event-destination-${data.id}">
-              ${data.type}
+            <label class="event__label  event__type-output" for="event-destination-${event.id}">
+              ${event.type}
             </label>
             <input
             class="event__input  event__input--destination"
-            id="event-destination-${data.id}"
-            type="text" name="event-destination"
+            id="event-destination-${event.id}"
+            type="text"
+            name="event-destination"
+            required
             value="${currentDestination ? currentDestination.name : ''}"
-            list="destination-list-${data.id}">
-            <datalist id="destination-list-${data.id}">
+            list="destination-list-${event.id}">
+            <datalist id="destination-list-${event.id}">
               ${createDestinationsTemplate(destinations)}
             </datalist>
           </div>
           <div class="event__field-group  event__field-group--time">
-            <label class="visually-hidden" for="event-start-time-${data.id}">From</label>
+            <label class="visually-hidden" for="event-start-time-${event.id}">From</label>
             <input
             class="event__input  event__input--time"
-            id="event-start-time-${data.id}"
+            id="event-start-time-${event.id}"
             type="text" name="event-start-time"
-            value="${humanizeDate(data.dateFrom, DateFormat.DATE_TIME)}">
+            required
+            value="${humanizeDate(event.dateFrom, DateFormat.DATE_TIME)}">
             &mdash;
-            <label class="visually-hidden" for="event-end-time-${data.id}">To</label>
+            <label class="visually-hidden" for="event-end-time-${event.id}">To</label>
             <input
             class="event__input  event__input--time"
-            id="event-end-time-${data.id}"
+            id="event-end-time-${event.id}"
             type="text" name="event-end-time"
-            value="${humanizeDate(data.dateTo, DateFormat.DATE_TIME)}">
+            required
+            value="${humanizeDate(event.dateTo, DateFormat.DATE_TIME)}">
           </div>
           <div class="event__field-group  event__field-group--price">
-            <label class="event__label" for="event-price-${data.id}">
+            <label class="event__label" for="event-price-${event.id}">
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
             <input
             class="event__input  event__input--price"
-            id="event-price-${data.id}"
-            type="text" name="event-price" value="${data.basePrice}">
+            id="event-price-${event.id}"
+            type="number"
+            required
+            autocomplete="off"
+            name="event-price"
+            value="${event.basePrice}">
           </div>
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
+          <button class="event__reset-btn" type="reset">${isEditForm ? 'Delete' : 'Cancel'}</button>
+          ${isEditForm ? createRollupButtonTemplate() : ''}
         </header>
         <section class="event__details">
-          <section class="event__section  event__section--offers">
-            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            ${data.offers && createOffersListTemplate({ eventOffersId: data.offers, type: data.type, offers: offers })}
-          </section>
-          ${data.destination && `<section class="event__section  event__section--destination">
+            ${event.offers && createOffersListTemplate({ eventOffersId: event.offers, type: event.type, offers: offers })}
+          ${event.destination && `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         ${currentDestination.description && `<p class="event__destination-description">${currentDestination.description}</p>`}
         ${currentDestination.pictures &&
