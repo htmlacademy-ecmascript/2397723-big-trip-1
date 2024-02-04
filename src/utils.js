@@ -109,13 +109,13 @@ export function sortPriceUp(eventA, eventB) {
 }
 
 /**
- * @param {string} idString
+ * @param {string} trimmedString
  * @param {number} trimmingPartsCount
  */
-export function trimPrefixFromIdString(idString, trimmingPartsCount = 2) {
+export function trimPrefixFromString(trimmedString, trimmingPartsCount = 2) {
   const reg = `([a-z]*-){${trimmingPartsCount}}`;
   const trimmingPart = new RegExp(reg);
-  return idString.replace(trimmingPart, '');
+  return trimmedString.replace(trimmingPart, '');
 }
 
 function isEventAfter(date) {

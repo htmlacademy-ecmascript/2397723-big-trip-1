@@ -1,3 +1,5 @@
+import { trimPrefixFromString } from '../utils';
+
 export default function createSortTemplate(sortOptions, currentSortType) {
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -9,7 +11,7 @@ export default function createSortTemplate(sortOptions, currentSortType) {
             type="radio"
             name="trip-sort"
             value="sort-${option.name}"
-            ${option.name === currentSortType ? 'checked' : ''}
+            ${option.name === trimPrefixFromString(currentSortType, 1) ? 'checked' : ''}
             ${option.isDisable ? 'disabled' : ''}
             >
           <label

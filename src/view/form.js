@@ -1,6 +1,6 @@
 import createFormTemplate from './form.template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-import { getByKey, trimPrefixFromIdString } from '../utils';
+import { getByKey, trimPrefixFromString } from '../utils';
 import 'flatpickr/dist/flatpickr.min.css';
 import { humanizeDate, DateFormat } from '../utils';
 
@@ -121,7 +121,7 @@ export default class FormView extends AbstractStatefulView {
 
   #changeOfferHandler = () => {
     const checkedOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    this._setState({ offers: checkedOffers.map((element) => trimPrefixFromIdString(element.id)) });
+    this._setState({ offers: checkedOffers.map((element) => trimPrefixFromString(element.id)) });
   };
 
   #changeDateFromHandler = ([userDate]) => {
