@@ -33,6 +33,8 @@ export default class TripEventsPresenter {
   #eventsBoard = new EventsBoardView();
   #emptyEventsListView = null;
 
+  #onNewEventDestroy = null;
+
   constructor({ tripEventsContainer, eventModel, offersModel, destinationsModel, filterModel, onNewEventDestroy }) {
     this.#tripEventsContainer = tripEventsContainer;
     this.#eventModel = eventModel;
@@ -40,12 +42,20 @@ export default class TripEventsPresenter {
     this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
 
+    this.#onNewEventDestroy = () => {
+      if (this.events.length === 0) {
+        this.#emptyEventsListView = new EmptyEventsListView(this.#filterType);
+        render(this.#emptyEventsListView, this.#tripEventsContainer);
+      }
+      onNewEventDestroy();
+    };
+
     this.#newEventPresenter = new NewEventPresenter({
-      eventsBoard: this.#eventsBoard,
+      newEventFormContainer: this.#eventsBoard.element,
       offers: this.offers,
       destinations: this.destinations,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewEventDestroy
+      onDestroy: this.#onNewEventDestroy
     });
 
     this.#eventModel.addObserver(this.#handleModelEvent);
@@ -80,19 +90,24 @@ export default class TripEventsPresenter {
     this.#offers = [...this.#offersModel.offers];
     this.#destinations = [...this.#destinationsModel.destinations];
 
-    this.#renderBoard();
+    if (this.events && this.events.length > 0) {
+      this.#renderSort();
+      render(this.#eventsBoard, this.#tripEventsContainer);
+      this.#renderEvents();
+    } else {
+      this.#emptyEventsListView = new EmptyEventsListView(this.#filterType);
+      render(this.#emptyEventsListView, this.#tripEventsContainer);
+    }
   }
 
   createEvent() {
     this.#currentSortType = Sort.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    if (this.#emptyEventsListView) {
+      remove(this.#emptyEventsListView);
+      render(this.#eventsBoard, this.#tripEventsContainer);
+    }
     this.#newEventPresenter.init();
-  }
-
-  #renderBoard() {
-    this.#renderSort();
-    render(this.#eventsBoard, this.#tripEventsContainer);
-    this.#renderEvents();
   }
 
   #renderSort() {
@@ -164,24 +179,23 @@ export default class TripEventsPresenter {
     if (this.#emptyEventsListView) {
       remove(this.#emptyEventsListView);
     }
-    if(this.events.length > 0) {
-      this.events.forEach((event) => this.#renderEvent(event));
-    } else {
-      this.#sortPresenter.destroy();
-      this.#renderEmptyEventsListView();
+    if (this.events.length === 0) {
+      if (this.#sortPresenter) {
+        this.#sortPresenter.destroy();
+      }
+      this.#emptyEventsListView = new EmptyEventsListView(this.#filterType);
+      render(this.#emptyEventsListView, this.#tripEventsContainer);
     }
-  }
-
-  #renderEmptyEventsListView() {
-    this.#emptyEventsListView = new EmptyEventsListView(this.#filterType);
-    render(this.#emptyEventsListView, this.#tripEventsContainer, RenderPosition.AFTERBEGIN);
+    this.events.forEach((event) => this.#renderEvent(event));
   }
 
   #clearEventsList({ resetSortType }) {
     if (resetSortType) {
-      this.#sortPresenter.destroy();
       this.#currentSortType = Sort.DAY;
-      this.#sortPresenter.init();
+      if (this.#sortPresenter) {
+        this.#sortPresenter.destroy();
+        this.#sortPresenter.init();
+      }
     }
     this.#newEventPresenter.destroy();
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
