@@ -6,14 +6,14 @@ export default class FilterPresenter {
   #component = null;
   #container = null;
   #filterModel = null;
-  #eventModel = null;
+  #eventsModel = null;
 
-  constructor({container, filterModel, eventModel}) {
+  constructor({container, filterModel, eventsModel}) {
     this.#container = container;
     this.#filterModel = filterModel;
-    this.#eventModel = eventModel;
+    this.#eventsModel = eventsModel;
 
-    this.#eventModel.addObserver(this.#handleModelEvent);
+    this.#eventsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 

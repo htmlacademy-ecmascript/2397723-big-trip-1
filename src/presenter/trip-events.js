@@ -14,7 +14,7 @@ const Sort = {
 };
 export default class TripEventsPresenter {
   #tripEventsContainer = null;
-  #eventModel = null;
+  #eventsModel = null;
   #offersModel = null;
   #destinationsModel = null;
   #filterModel = null;
@@ -35,9 +35,9 @@ export default class TripEventsPresenter {
 
   #onNewEventDestroy = null;
 
-  constructor({ tripEventsContainer, eventModel, offersModel, destinationsModel, filterModel, onNewEventDestroy }) {
+  constructor({ tripEventsContainer, eventsModel, offersModel, destinationsModel, filterModel, onNewEventDestroy }) {
     this.#tripEventsContainer = tripEventsContainer;
-    this.#eventModel = eventModel;
+    this.#eventsModel = eventsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
@@ -58,13 +58,13 @@ export default class TripEventsPresenter {
       onDestroy: this.#onNewEventDestroy
     });
 
-    this.#eventModel.addObserver(this.#handleModelEvent);
+    this.#eventsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get events() {
     this.#filterType = this.#filterModel.filter;
-    const events = this.#eventModel.events;
+    const events = this.#eventsModel.events;
     const filteredEvents = filter[this.#filterType](events);
 
     switch (this.#currentSortType) {
@@ -122,13 +122,13 @@ export default class TripEventsPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_EVENT:
-        this.#eventModel.updateEvent(updateType, update);
+        this.#eventsModel.updateEvent(updateType, update);
         break;
       case UserAction.ADD_EVENT:
-        this.#eventModel.addEvent(updateType, update);
+        this.#eventsModel.addEvent(updateType, update);
         break;
       case UserAction.DELETE_EVENT:
-        this.#eventModel.deleteEvent(updateType, update);
+        this.#eventsModel.deleteEvent(updateType, update);
         break;
     }
   };

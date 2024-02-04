@@ -1,7 +1,7 @@
 import Observable from '../framework/observable';
 import events from '../mock/points.json';
 
-export default class EventModel extends Observable {
+export default class EventsModel extends Observable {
   #events = events;
 
   get events() {

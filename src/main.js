@@ -1,6 +1,6 @@
 import FilterPresenter from './presenter/filter';
 import TripEventsPresenter from './presenter/trip-events';
-import EventModel from './model/event-model';
+import EventsModel from './model/events-model';
 import OffersModel from './model/offers-model';
 import DestinationsModel from './model/destinations-model';
 import FilterModel from './model/filter-model.js';
@@ -10,7 +10,7 @@ import { render } from './framework/render.js';
 const headerFiltersElement = document.querySelector('.trip-controls__filters');
 const tripEventsElement = document.querySelector('.trip-events');
 const tripHeaderMainElement = document.querySelector('.trip-main');
-const eventModel = new EventModel();
+const eventsModel = new EventsModel();
 const offersModel = new OffersModel();
 const destinationsModel = new DestinationsModel();
 const filterModel = new FilterModel();
@@ -18,13 +18,13 @@ const filterModel = new FilterModel();
 const filterPresenter = new FilterPresenter({
   container: headerFiltersElement,
   filterModel,
-  eventModel
+  eventsModel
 });
 
 const tripEventsPresenter = new TripEventsPresenter({
   tripEventsContainer: tripEventsElement,
   onNewEventDestroy: handleNewEventFormClose,
-  eventModel,
+  eventsModel,
   offersModel,
   destinationsModel,
   filterModel
