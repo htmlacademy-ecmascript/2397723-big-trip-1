@@ -38,7 +38,7 @@ export default class SortView extends AbstractView {
     super();
     this.#handlerSortClick = onSortClick;
     this.#currentSortType = currentSortType;
-    this.element.querySelectorAll('.trip-sort__btn').forEach((elem) => elem.addEventListener('click', this.#sortClickHandler));
+    this.element.querySelectorAll('.trip-sort__input').forEach((elem) => elem.addEventListener('click', this.#sortClickHandler));
   }
 
   get template() {
@@ -46,6 +46,6 @@ export default class SortView extends AbstractView {
   }
 
   #sortClickHandler = (evt) => {
-    this.#handlerSortClick(evt.target.textContent.trim());
+    this.#handlerSortClick(evt.target.value);
   };
 }

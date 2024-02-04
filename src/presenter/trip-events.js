@@ -1,4 +1,4 @@
-import { RenderPosition, remove, render } from '../framework/render';
+import { remove, render } from '../framework/render';
 import EventsBoardView from '../view/events-board';
 import EventPresenter from './event';
 import EmptyEventsListView from '../view/empty-events-list';
@@ -8,9 +8,9 @@ import { UserAction, UpdateType, FilterType } from '../const';
 import NewEventPresenter from './new-event-presenter';
 
 const Sort = {
-  DAY: 'day',
-  TIME: 'time',
-  PRICE: 'price'
+  DAY: 'sort-day',
+  TIME: 'sort-time',
+  PRICE: 'sort-price'
 };
 export default class TripEventsPresenter {
   #tripEventsContainer = null;
