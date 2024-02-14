@@ -17,7 +17,6 @@ const datePickerDefaultOptions = {
 };
 
 const initialState = {
-  id: '0',
   type: 'taxi',
   dateFrom: '',
   dateTo: '',
