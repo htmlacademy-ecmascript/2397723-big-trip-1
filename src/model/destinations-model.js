@@ -1,14 +1,12 @@
-import { UpdateType } from '../const';
 import Observable from '../framework/observable';
-import { getByKey } from '../utils';
 
 export default class DestinationsModel extends Observable {
-  #destinationsApiService = null;
+  #service = null;
   #destinations = [];
 
-  constructor({ destinationsApiService }) {
+  constructor(service) {
     super();
-    this.#destinationsApiService = destinationsApiService;
+    this.#service = service;
   }
 
   get destinations() {
@@ -16,17 +14,7 @@ export default class DestinationsModel extends Observable {
   }
 
   async init() {
-    try {
-      const destinations = await this.#destinationsApiService.destinations;
-      this.#destinations = destinations;
-    } catch (err) {
-      this.#destinations = [];
-    }
-    this._notify(UpdateType.INIT);
-  }
-
-  getEventsDestination(id) {
-    const eventsDestination = getByKey('id', id, this.#destinations);
-    return eventsDestination;
+    const destinations = await this.#service.getDestinations();
+    this.#destinations = destinations;
   }
 }

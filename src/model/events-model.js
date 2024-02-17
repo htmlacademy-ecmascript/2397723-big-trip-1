@@ -1,12 +1,16 @@
 import { UpdateType } from '../const';
 import Observable from '../framework/observable';
 export default class EventsModel extends Observable {
-  #eventsApiService = null;
+  #service = null;
+  #offersModel = null;
+  #destinationsModel = null;
   #events = [];
 
-  constructor({ eventsApiService }) {
+  constructor({ service, offersModel, destinationsModel }) {
     super();
-    this.#eventsApiService = eventsApiService;
+    this.#service = service;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
   }
 
   get events() {
@@ -15,12 +19,17 @@ export default class EventsModel extends Observable {
 
   async init() {
     try {
-      const events = await this.#eventsApiService.events;
+      await Promise.all([
+        this.#offersModel.init(),
+        this.#destinationsModel.init()
+      ]);
+      const events = await this.#service.getEvents();
       this.#events = events.map(this.#adaptToClient);
+      this._notify(UpdateType.INIT, {isError: false});
     } catch (err) {
       this.#events = [];
+      this._notify(UpdateType.INIT, {isError: true});
     }
-    this._notify(UpdateType.INIT);
   }
 
   async updateEvent(updateType, update) {
@@ -31,7 +40,7 @@ export default class EventsModel extends Observable {
     }
 
     try {
-      const response = await this.#eventsApiService.updateEvent(update);
+      const response = await this.#service.updateEvent(update);
       const updatedEvent = this.#adaptToClient(response);
       this.#events = [
         ...this.#events.slice(0, index),
@@ -47,7 +56,7 @@ export default class EventsModel extends Observable {
 
   async addEvent(updateType, update) {
     try {
-      const response = await this.#eventsApiService.addEvent(update);
+      const response = await this.#service.addEvent(update);
       const newEvent = this.#adaptToClient(response);
       this.#events = [
         newEvent,
@@ -66,7 +75,7 @@ export default class EventsModel extends Observable {
       throw new Error('Can\'t delete unexisting event');
     }
     try {
-      await this.#eventsApiService.deleteEvent(update);
+      await this.#service.deleteEvent(update);
       this.#events = [
         ...this.#events.slice(0, index),
         ...this.#events.slice(index + 1),

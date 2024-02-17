@@ -7,9 +7,26 @@ const Method = {
   DELETE: 'DELETE',
 };
 
+const ENDPOINTS = {
+  events: 'points',
+  offers: 'offers',
+  destinations: 'destinations'
+};
+
 export default class DataApiService extends ApiService {
-  get events() {
-    return this._load({url: 'points'})
+
+  async getDestinations() {
+    return this._load({ url: ENDPOINTS.destinations })
+      .then(ApiService.parseResponse);
+  }
+
+  async getOffers() {
+    return this._load({ url: ENDPOINTS.offers })
+      .then(ApiService.parseResponse);
+  }
+
+  async getEvents() {
+    return this._load({ url: ENDPOINTS.events })
       .then(ApiService.parseResponse);
   }
 
@@ -18,7 +35,7 @@ export default class DataApiService extends ApiService {
       url: `points/${event.id}`,
       method: Method.PUT,
       body: JSON.stringify(this.#adaptToServer(event)),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
@@ -31,7 +48,7 @@ export default class DataApiService extends ApiService {
       url: 'points',
       method: Method.POST,
       body: JSON.stringify(this.#adaptToServer(event)),
-      headers: new Headers({'Content-Type': 'application/json'}),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
@@ -49,7 +66,8 @@ export default class DataApiService extends ApiService {
   }
 
   #adaptToServer(event) {
-    const adaptedEvent = {...event,
+    const adaptedEvent = {
+      ...event,
       'base_price': Number(event['basePrice']),
       'date_from': event['dateFrom'],
       'date_to': event['dateTo'],

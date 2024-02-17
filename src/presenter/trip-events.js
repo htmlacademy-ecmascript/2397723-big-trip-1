@@ -33,6 +33,7 @@ export default class TripEventsPresenter {
   #emptyEventsListView = null;
 
   #isLoading = true;
+  #isError = false;
 
   #onNewEventDestroy = null;
 
@@ -141,15 +142,23 @@ export default class TripEventsPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
-        this.#isLoading = false;
-        remove(this.#loadingComponent);
-        this.#renderBoard();
-        break;
+        if (data.isError) {
+          this.#isError = true;
+          this.#renderBoard();
+          break;
+        } else {
+          this.#isLoading = false;
+          remove(this.#loadingComponent);
+          this.#renderBoard();
+          break;
+        }
     }
   };
 
   #handleModeChange = () => {
-    this.#newEventPresenter.destroy();
+    if (this.#newEventPresenter) {
+      this.#newEventPresenter.destroy();
+    }
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -192,6 +201,11 @@ export default class TripEventsPresenter {
       this.#renderLoading();
       return;
     }
+    if (this.#isError) {
+      this.#clearBoard({ resetSortType: true });
+      this.#sortPresenter.destroy();
+      return;
+    }
     if (this.#emptyEventsListView) {
       remove(this.#emptyEventsListView);
     }
@@ -216,7 +230,9 @@ export default class TripEventsPresenter {
         this.#sortPresenter.init();
       }
     }
-    this.#newEventPresenter.destroy();
+    if (this.#newEventPresenter) {
+      this.#newEventPresenter.destroy();
+    }
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
   }
 }
