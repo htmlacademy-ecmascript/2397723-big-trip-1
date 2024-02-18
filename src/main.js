@@ -19,7 +19,11 @@ const dataApiService = new DataApiService(ENDPOINT, AUTHORIZATION);
 
 const offersModel = new OffersModel(dataApiService);
 const destinationsModel = new DestinationsModel(dataApiService);
-const eventsModel = new EventsModel({service: dataApiService, destinationsModel, offersModel});
+const eventsModel = new EventsModel({
+  service: dataApiService,
+  destinationsModel,
+  offersModel
+});
 
 const filterModel = new FilterModel();
 
@@ -51,7 +55,9 @@ function handleNewEventFormClose() {
   newEventButtonComponent.element.disabled = false;
 }
 
-eventsModel.init();
 filterPresenter.init();
 tripEventsPresenter.init();
-render(newEventButtonComponent, tripHeaderMainElement);
+eventsModel.init()
+  .finally(() => {
+    render(newEventButtonComponent, tripHeaderMainElement);
+  });

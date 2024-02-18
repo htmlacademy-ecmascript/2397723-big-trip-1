@@ -23,7 +23,10 @@ const initialState = {
   destination: '',
   basePrice: '',
   isFavorite: false,
-  offers: []
+  offers: [],
+  isDisabled: false,
+  isSaving: false,
+  isDeleting: false
 };
 
 export default class FormView extends AbstractStatefulView {
@@ -41,7 +44,7 @@ export default class FormView extends AbstractStatefulView {
   constructor({ event, offers, destinations, isEditForm = true, onFormSubmit, onFormClose, onResetClick }) {
     super();
     if (isEditForm) {
-      this._setState(event);
+      this._setState(FormView.parseEventToState(event));
     } else {
       this._setState(this.#initialState);
     }
@@ -86,7 +89,7 @@ export default class FormView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this._state);
+    this.#handleFormSubmit(FormView.parseStateToEvent(this._state));
   };
 
   #formCloseHandler = (evt) => {
@@ -149,5 +152,23 @@ export default class FormView extends AbstractStatefulView {
       minDate: this._state.dateFrom,
       onClose: this.#changeDateToHandler
     });
+  }
+
+  static parseEventToState(event) {
+    return {...event,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+  }
+
+  static parseStateToEvent(state) {
+    const event = {...state};
+
+    delete event.isDisabled;
+    delete event.isSaving;
+    delete event.isDeleting;
+
+    return event;
   }
 }
