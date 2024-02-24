@@ -106,6 +106,11 @@ export default class EventPresenter {
     this.#formComponent.shake(resetFormState);
   }
 
+  destroy() {
+    remove(this.#eventComponent);
+    remove(this.#formComponent);
+  }
+
   #getEventsDestination(id) {
     return getByKey('id', id, this.#destinations);
   }
@@ -178,10 +183,5 @@ export default class EventPresenter {
     replace(this.#eventComponent, this.#formComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
-  }
-
-  destroy() {
-    remove(this.#eventComponent);
-    remove(this.#formComponent);
   }
 }

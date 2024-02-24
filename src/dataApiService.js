@@ -7,26 +7,26 @@ const Method = {
   DELETE: 'DELETE',
 };
 
-const ENDPOINTS = {
-  events: 'points',
-  offers: 'offers',
-  destinations: 'destinations'
+const Endpoints = {
+  EVENTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations'
 };
 
 export default class DataApiService extends ApiService {
 
   async getDestinations() {
-    return this._load({ url: ENDPOINTS.destinations })
+    return this._load({ url: Endpoints.DESTINATIONS })
       .then(ApiService.parseResponse);
   }
 
   async getOffers() {
-    return this._load({ url: ENDPOINTS.offers })
+    return this._load({ url: Endpoints.OFFERS })
       .then(ApiService.parseResponse);
   }
 
   async getEvents() {
-    return this._load({ url: ENDPOINTS.events })
+    return this._load({ url: Endpoints.EVENTS })
       .then(ApiService.parseResponse);
   }
 

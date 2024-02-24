@@ -34,7 +34,7 @@ export default class FormView extends AbstractStatefulView {
   #destinations = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
-  #handlerResetClick = null;
+  #handleResetClick = null;
   #datePickerFrom = null;
   #datePickerTo = null;
 
@@ -53,9 +53,18 @@ export default class FormView extends AbstractStatefulView {
     this.#isEditForm = isEditForm;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
-    this.#handlerResetClick = onResetClick;
+    this.#handleResetClick = onResetClick;
 
     this._restoreHandlers();
+  }
+
+  get template() {
+    return createFormTemplate({
+      event: this._state,
+      offers: this.#offers,
+      destinations: this.#destinations,
+      isEditForm: this.#isEditForm
+    });
   }
 
   _restoreHandlers() {
@@ -78,15 +87,6 @@ export default class FormView extends AbstractStatefulView {
     this.#setDatepickers();
   }
 
-  get template() {
-    return createFormTemplate({
-      event: this._state,
-      offers: this.#offers,
-      destinations: this.#destinations,
-      isEditForm: this.#isEditForm
-    });
-  }
-
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(FormView.parseStateToEvent(this._state));
@@ -99,7 +99,7 @@ export default class FormView extends AbstractStatefulView {
 
   #resetClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handlerResetClick(this._state);
+    this.#handleResetClick(this._state);
   };
 
   #changeTypeHandler = (evt) => {

@@ -25,6 +25,13 @@ export default class TripEventsPresenter {
   #offersModel = null;
   #destinationsModel = null;
   #filterModel = null;
+  #onNewEventDestroy = null;
+  #sortPresenter = null;
+  #newEventPresenter = null;
+  #emptyEventsListView = null;
+
+  #eventsBoard = new EventsBoardView();
+  #loadingComponent = new LoadingView();
 
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -33,20 +40,10 @@ export default class TripEventsPresenter {
 
   #eventPresenters = new Map();
 
-  #sortPresenter = null;
-  #newEventPresenter = null;
-
   #currentSortType = Sort.DAY;
   #filterType = FilterType.EVERYTHING;
-
-  #eventsBoard = new EventsBoardView();
-  #loadingComponent = new LoadingView();
-  #emptyEventsListView = null;
-
   #isLoading = true;
   #isError = false;
-
-  #onNewEventDestroy = null;
 
   constructor({ tripEventsContainer, eventsModel, offersModel, destinationsModel, filterModel, onNewEventDestroy }) {
     this.#tripEventsContainer = tripEventsContainer;
