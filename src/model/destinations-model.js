@@ -1,16 +1,20 @@
 import Observable from '../framework/observable';
-import destinations from '../mock/destinations.json';
-import { getByKey } from '../utils';
 
 export default class DestinationsModel extends Observable {
-  #destinations = destinations;
+  #service = null;
+  #destinations = [];
+
+  constructor(service) {
+    super();
+    this.#service = service;
+  }
 
   get destinations() {
     return this.#destinations;
   }
 
-  getEventsDestination(id) {
-    const eventsDestination = getByKey('id', id, this.#destinations);
-    return eventsDestination;
+  async init() {
+    const destinations = await this.#service.getDestinations();
+    this.#destinations = destinations;
   }
 }

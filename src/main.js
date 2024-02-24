@@ -1,30 +1,42 @@
 import FilterPresenter from './presenter/filter';
 import TripEventsPresenter from './presenter/trip-events';
-import EventModel from './model/event-model';
+import EventsModel from './model/events-model.js';
 import OffersModel from './model/offers-model';
 import DestinationsModel from './model/destinations-model';
 import FilterModel from './model/filter-model.js';
 import NewEventButtonView from './view/new-event-button.js';
 import { render } from './framework/render.js';
+import DataApiService from './dataApiService.js';
+
+const AUTHORIZATION = 'Basic Om9C2nY5ply';
+const ENDPOINT = 'https://20.objects.htmlacademy.pro/big-trip';
 
 const headerFiltersElement = document.querySelector('.trip-controls__filters');
 const tripEventsElement = document.querySelector('.trip-events');
 const tripHeaderMainElement = document.querySelector('.trip-main');
-const eventModel = new EventModel();
-const offersModel = new OffersModel();
-const destinationsModel = new DestinationsModel();
+
+const dataApiService = new DataApiService(ENDPOINT, AUTHORIZATION);
+
+const offersModel = new OffersModel(dataApiService);
+const destinationsModel = new DestinationsModel(dataApiService);
+const eventsModel = new EventsModel({
+  service: dataApiService,
+  destinationsModel,
+  offersModel
+});
+
 const filterModel = new FilterModel();
 
 const filterPresenter = new FilterPresenter({
   container: headerFiltersElement,
   filterModel,
-  eventModel
+  eventsModel
 });
 
 const tripEventsPresenter = new TripEventsPresenter({
   tripEventsContainer: tripEventsElement,
   onNewEventDestroy: handleNewEventFormClose,
-  eventModel,
+  eventsModel,
   offersModel,
   destinationsModel,
   filterModel
@@ -45,4 +57,7 @@ function handleNewEventFormClose() {
 
 filterPresenter.init();
 tripEventsPresenter.init();
-render(newEventButtonComponent, tripHeaderMainElement);
+eventsModel.init()
+  .finally(() => {
+    render(newEventButtonComponent, tripHeaderMainElement);
+  });

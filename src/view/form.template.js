@@ -74,8 +74,17 @@ function createRollupButtonTemplate() {
 }
 
 export default function createFormTemplate({ event, offers, destinations, isEditForm }) {
-
   const currentDestination = event.destination ? getById(event.destination, destinations) : event.destination;
+
+  const setDeleteButtonName = () => {
+    if (!isEditForm) {
+      return 'Cancel';
+    }
+    if (event.isDeleting) {
+      return 'Deleting...';
+    }
+    return 'Delete';
+  };
 
   return (
     ` <li class="trip-events__item">
@@ -129,8 +138,8 @@ export default function createFormTemplate({ event, offers, destinations, isEdit
             name="event-price"
             value="${event.basePrice}">
           </div>
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">${isEditForm ? 'Delete' : 'Cancel'}</button>
+          <button class="event__save-btn  btn  btn--blue" type="submit" ${event.isDisabled ? 'disabled' : ''}>${event.isSaving ? 'Saving...' : 'Save'}</button>
+          <button class="event__reset-btn" type="reset" ${event.isDisabled ? 'disabled' : ''}>${setDeleteButtonName()}</button>
           ${isEditForm ? createRollupButtonTemplate() : ''}
         </header>
         <section class="event__details">

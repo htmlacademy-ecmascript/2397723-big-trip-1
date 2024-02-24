@@ -1,6 +1,6 @@
 import createFormTemplate from './form.template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-import { getByKey, trimPrefixFromIdString } from '../utils';
+import { getByKey, trimPrefixFromString } from '../utils';
 import 'flatpickr/dist/flatpickr.min.css';
 import { humanizeDate, DateFormat } from '../utils';
 
@@ -17,14 +17,16 @@ const datePickerDefaultOptions = {
 };
 
 const initialState = {
-  id: '0',
   type: 'taxi',
   dateFrom: '',
   dateTo: '',
   destination: '',
   basePrice: '',
   isFavorite: false,
-  offers: []
+  offers: [],
+  isDisabled: false,
+  isSaving: false,
+  isDeleting: false
 };
 
 export default class FormView extends AbstractStatefulView {
@@ -42,7 +44,7 @@ export default class FormView extends AbstractStatefulView {
   constructor({ event, offers, destinations, isEditForm = true, onFormSubmit, onFormClose, onResetClick }) {
     super();
     if (isEditForm) {
-      this._setState(event);
+      this._setState(FormView.parseEventToState(event));
     } else {
       this._setState(this.#initialState);
     }
@@ -87,7 +89,7 @@ export default class FormView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this._state);
+    this.#handleFormSubmit(FormView.parseStateToEvent(this._state));
   };
 
   #formCloseHandler = (evt) => {
@@ -121,7 +123,7 @@ export default class FormView extends AbstractStatefulView {
 
   #changeOfferHandler = () => {
     const checkedOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-    this._setState({ offers: checkedOffers.map((element) => trimPrefixFromIdString(element.id)) });
+    this._setState({ offers: checkedOffers.map((element) => trimPrefixFromString(element.id)) });
   };
 
   #changeDateFromHandler = ([userDate]) => {
@@ -150,5 +152,23 @@ export default class FormView extends AbstractStatefulView {
       minDate: this._state.dateFrom,
       onClose: this.#changeDateToHandler
     });
+  }
+
+  static parseEventToState(event) {
+    return {...event,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+  }
+
+  static parseStateToEvent(state) {
+    const event = {...state};
+
+    delete event.isDisabled;
+    delete event.isSaving;
+    delete event.isDeleting;
+
+    return event;
   }
 }

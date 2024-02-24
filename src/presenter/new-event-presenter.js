@@ -1,20 +1,19 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';
 import FormView from '../view/form.js';
-import { nanoid } from 'nanoid';
 
 export default class NewEventPresenter {
   #offers = null;
   #destinations = null;
 
-  #eventsBoard = null;
+  #newEventFormContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
 
   #formComponent = null;
 
-  constructor({eventsBoard, offers, destinations, onDataChange, onDestroy}) {
-    this.#eventsBoard = eventsBoard;
+  constructor({newEventFormContainer, offers, destinations, onDataChange, onDestroy}) {
+    this.#newEventFormContainer = newEventFormContainer;
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleDataChange = onDataChange;
@@ -31,10 +30,10 @@ export default class NewEventPresenter {
       destinations: this.#destinations,
       isEditForm: false,
       onFormSubmit: this.#handleFormSubmit,
-      onResetClick: this.#handleResetClick
+      onResetClick: this.#handleDeleteClick
     });
-    console.log(this.#eventsBoard)
-    render(this.#formComponent, this.#eventsBoard.element, RenderPosition.BEFOREBEGIN);
+
+    render(this.#formComponent, this.#newEventFormContainer, RenderPosition.AFTERBEGIN);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
@@ -52,8 +51,26 @@ export default class NewEventPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
+  setSaving() {
+    this.#formComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#formComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#formComponent.shake(resetFormState);
+  }
+
   #handleFormSubmit = (event) => {
-    event.id = nanoid();
     this.#handleDataChange(
       UserAction.ADD_EVENT,
       UpdateType.MINOR,
@@ -61,7 +78,7 @@ export default class NewEventPresenter {
     );
   };
 
-  #handleResetClick = () => {
+  #handleDeleteClick = () => {
     this.destroy();
   };
 
