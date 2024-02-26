@@ -8,7 +8,6 @@ import NewEventButtonView from './view/new-event-button.js';
 import { render } from './framework/render.js';
 import DataApiService from './data-api-service.js';
 import TripMainPresenter from './presenter/trip-main-presenter.js';
-import ModelsApi from './models-api.js';
 
 const AUTHORIZATION = 'Basic Om9C2nY5ply';
 const ENDPOINT = 'https://20.objects.htmlacademy.pro/big-trip';
@@ -22,8 +21,6 @@ const dataApiService = new DataApiService(ENDPOINT, AUTHORIZATION);
 const eventsModel = new EventsModel(dataApiService);
 const offersModel = new OffersModel(dataApiService);
 const destinationsModel = new DestinationsModel(dataApiService);
-
-const modelsApi = new ModelsApi({eventsModel, offersModel, destinationsModel});
 
 const filterModel = new FilterModel();
 
@@ -62,7 +59,15 @@ const tripMainPresenter = new TripMainPresenter({
   tripMainContainer: tripHeaderMainElement
 });
 
-modelsApi.init().finally(() => {
+async function initModels() {
+  await Promise.all([
+    offersModel.init(),
+    destinationsModel.init(),
+  ]);
+  await eventsModel.init();
+}
+
+initModels().then(() => {
   render(newEventButtonComponent, tripHeaderMainElement);
   tripMainPresenter.init();
 });
