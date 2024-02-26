@@ -32,40 +32,36 @@ export default class DataApiService extends ApiService {
 
   async updateEvent(event) {
     const response = await this._load({
-      url: `points/${event.id}`,
+      url: `${Endpoints.EVENTS}/${event.id}`,
       method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(event)),
+      body: JSON.stringify(this.#adaptEventToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   async addEvent(event) {
     const response = await this._load({
-      url: 'points',
+      url: Endpoints.EVENTS,
       method: Method.POST,
-      body: JSON.stringify(this.#adaptToServer(event)),
+      body: JSON.stringify(this.#adaptEventToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   async deleteEvent(event) {
     const response = await this._load({
-      url: `points/${event.id}`,
+      url: `${Endpoints.EVENTS}/${event.id}`,
       method: Method.DELETE,
     });
 
     return response;
   }
 
-  #adaptToServer(event) {
+  #adaptEventToServer(event) {
     const adaptedEvent = {
       ...event,
       'base_price': Number(event['basePrice']),
