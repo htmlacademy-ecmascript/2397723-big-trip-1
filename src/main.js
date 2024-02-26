@@ -7,6 +7,7 @@ import FilterModel from './model/filter-model.js';
 import NewEventButtonView from './view/new-event-button.js';
 import { render } from './framework/render.js';
 import DataApiService from './dataApiService.js';
+import TripMainPresenter from './presenter/trip-main-presenter.js';
 
 const AUTHORIZATION = 'Basic Om9C2nY5ply';
 const ENDPOINT = 'https://20.objects.htmlacademy.pro/big-trip';
@@ -55,9 +56,17 @@ function handleNewEventFormClose() {
   newEventButtonComponent.element.disabled = false;
 }
 
+const tripMainPresenter = new TripMainPresenter({
+  events: eventsModel,
+  offers: offersModel,
+  destinations: destinationsModel,
+  tripMainContainer: tripHeaderMainElement
+});
+
 filterPresenter.init();
 tripEventsPresenter.init();
 eventsModel.init()
   .finally(() => {
     render(newEventButtonComponent, tripHeaderMainElement);
+    tripMainPresenter.init();
   });
