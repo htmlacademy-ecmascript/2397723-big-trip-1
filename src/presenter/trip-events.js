@@ -5,7 +5,7 @@ import EventPresenter from './event';
 import EmptyEventsListView from '../view/empty-events-list';
 import SortPresenter from './sort';
 import { sortDateDown, sortTimeUp, sortPriceUp, filter } from '../utils';
-import { UserAction, UpdateType, FilterType } from '../const';
+import { UserAction, UpdateType, FilterType, SortType } from '../const';
 import NewEventPresenter from './new-event-presenter';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 
@@ -14,11 +14,7 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
-const Sort = {
-  DAY: 'sort-day',
-  TIME: 'sort-time',
-  PRICE: 'sort-price'
-};
+
 export default class TripEventsPresenter {
   #tripEventsContainer = null;
   #eventsModel = null;
@@ -40,7 +36,7 @@ export default class TripEventsPresenter {
 
   #eventPresenters = new Map();
 
-  #currentSortType = Sort.DAY;
+  #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
   #isError = false;
@@ -72,11 +68,11 @@ export default class TripEventsPresenter {
     const filteredEvents = filter[this.#filterType](events);
 
     switch (this.#currentSortType) {
-      case Sort.DAY:
+      case SortType.DAY:
         return filteredEvents.sort(sortDateDown);
-      case Sort.TIME:
+      case SortType.TIME:
         return filteredEvents.sort(sortTimeUp);
-      case Sort.PRICE:
+      case SortType.PRICE:
         return filteredEvents.sort(sortPriceUp);
     }
     return filteredEvents;
@@ -104,7 +100,7 @@ export default class TripEventsPresenter {
       onDestroy: this.#onNewEventDestroy
     });
 
-    this.#currentSortType = Sort.DAY;
+    this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     if (this.#emptyEventsListView) {
       remove(this.#emptyEventsListView);
@@ -249,7 +245,7 @@ export default class TripEventsPresenter {
 
   #clearBoard({ resetSortType }) {
     if (resetSortType) {
-      this.#currentSortType = Sort.DAY;
+      this.#currentSortType = SortType.DAY;
       if (this.#sortPresenter) {
         this.#sortPresenter.destroy();
         this.#sortPresenter.init();
