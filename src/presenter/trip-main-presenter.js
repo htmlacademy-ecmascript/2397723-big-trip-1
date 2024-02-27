@@ -1,11 +1,8 @@
-import { render, RenderPosition } from '../framework/render';
+import { remove, render, RenderPosition, replace } from '../framework/render';
+import { getTripTitle, getTripDuration, getTripCost } from '../utils/trip-main-info';
 import TripMainView from '../view/trip-main';
 
 export default class TripMainPresenter {
-  #events = [];
-  #offers = [];
-  #destinations = [];
-
   #eventsModel = [];
   #offersModel = [];
   #destinationsModel = [];
@@ -24,29 +21,34 @@ export default class TripMainPresenter {
     this.#tripMainContainer = tripMainContainer;
   }
 
+  get events() {
+    return this.#eventsModel.events;
+  }
+
+  get offers() {
+    return this.#offersModel.offers;
+  }
+
+  get destinations() {
+    return this.#destinationsModel.destinations;
+  }
+
 
   init() {
-
-    this.#isEmpty = false;
-    this.#calculateTitle();
-    this.#calculateDuration();
-    this.#calculateCost();
     this.#renderTripMain();
+    this.#eventsModel.addObserver(this.#eventsModelHandler);
   }
 
-  #calculateDuration() {
-    this.#duration = 'Too much';
+  #calculateParams() {
+    this.#title = getTripTitle(this.events, this.destinations);
+    this.#duration = getTripDuration(this.events);
+    this.#cost = getTripCost(this.events, this.offers);
   }
 
-  #calculateCost() {
-    this.#cost = 444;
-  }
+  #renderTripMain = () => {
+    const prevTripMainComponent = this.#tripMainComponent;
+    this.#calculateParams();
 
-  #calculateTitle() {
-    this.#title = 'Bla-bla';
-  }
-
-  #renderTripMain() {
     this.#tripMainComponent = new TripMainView({
       title: this.#title,
       duration: this.#duration,
@@ -54,6 +56,15 @@ export default class TripMainPresenter {
       isEmpty: this.#isEmpty
     });
 
-    render(this.#tripMainComponent, this.#tripMainContainer, RenderPosition.AFTERBEGIN);
-  }
+    if (prevTripMainComponent === null) {
+      render(this.#tripMainComponent, this.#tripMainContainer, RenderPosition.AFTERBEGIN);
+      return;
+    }
+    replace(this.#tripMainComponent, prevTripMainComponent);
+    remove(prevTripMainComponent);
+  };
+
+  #eventsModelHandler = () => {
+    this.#renderTripMain();
+  };
 }
