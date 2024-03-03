@@ -1,6 +1,7 @@
 import FilterView from '../view/filter';
 import { render, remove, replace } from '../framework/render';
 import { UpdateType, FilterType } from '../const';
+import { filter } from '../utils';
 
 export default class FilterPresenter {
   #component = null;
@@ -30,6 +31,7 @@ export default class FilterPresenter {
     this.#component = new FilterView({
       filters,
       currentFilterType: this.#filterModel.filter,
+      disabledFilters: this.#getDisabledFilters(),
       onFilterTypeChange: this.#handleFilterTypeChange
     });
 
@@ -40,6 +42,18 @@ export default class FilterPresenter {
 
     replace(this.#component, prevFilterComponent);
     remove(prevFilterComponent);
+  }
+
+  #getDisabledFilters() {
+    const allFilters = Object.values(FilterType);
+    const disabledFilters = [];
+    allFilters.forEach((filterType) => {
+      const filteredEvents = filter[filterType](this.#eventsModel.events);
+      if (filteredEvents.length <= 0) {
+        disabledFilters.push(filterType);
+      }
+    });
+    return disabledFilters;
   }
 
   #handleModelEvent = () => {

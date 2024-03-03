@@ -1,4 +1,4 @@
-function createFilterItemTemplate(filter, currentFilterType) {
+function createFilterItemTemplate({filter, currentFilterType, disabledFilters}) {
   return (
     `<div class="trip-filters__filter">
       <input
@@ -8,6 +8,7 @@ function createFilterItemTemplate(filter, currentFilterType) {
         type="radio"
         name="trip-filter"
         value="${filter.type}"
+        ${disabledFilters.includes(filter.type) ? 'disabled' : ''}
         ${filter.type === currentFilterType ? 'checked' : ''}
         >
       <label
@@ -20,9 +21,9 @@ function createFilterItemTemplate(filter, currentFilterType) {
   );
 }
 
-export default function createFilterTemplate(filters, currentFilterType) {
+export default function createFilterTemplate({filters, currentFilterType, disabledFilters}) {
   const filterItemsTemplate = filters
-    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
+    .map((filter) => createFilterItemTemplate({filter, currentFilterType, disabledFilters}))
     .join('');
   return (
     `<form class="trip-filters" action="#" method="get">
