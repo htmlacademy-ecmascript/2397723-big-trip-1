@@ -16,7 +16,7 @@ function createTypeListTemplate({ eventId, eventType, types }) {
       ${types.map((type) => (
       `<div class="event__type-item">
           <input
-            id="event-type-${type.type}-${eventId}"
+            id="event-type-${type.type}-${eventId ? eventId : 'new-event'}"
             class="event__type-input  visually-hidden"
             type="radio"
             required
@@ -25,7 +25,7 @@ function createTypeListTemplate({ eventId, eventType, types }) {
             ${type.type === eventType ? 'checked' : ''}>
           <label
             class="event__type-label  event__type-label--${type.type}"
-            for="event-type-${type.type}-${eventId}">
+            for="event-type-${type.type}-${eventId ? eventId : 'new-event'}">
           ${capitalizeFirstLetter(type.type)}
           </label>
         </div>`

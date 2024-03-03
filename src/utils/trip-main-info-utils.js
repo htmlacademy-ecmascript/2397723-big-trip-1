@@ -2,8 +2,16 @@ import dayjs from 'dayjs';
 import { sortDateDown } from './sort-utils';
 import { DateFormat } from '../const';
 
+/**
+ * @const {number} Количество мест назначения, свыше которого отображаться будут только первый и последний
+ */
 const DESTINATIONS_ITEMS_AMOUNT = 3;
 
+/**
+ * Функция расчета и генерации строки с общей продолжительности путешествия
+ * @param {Array} events
+ * @return {string}
+ */
 export function getTripDuration(events = []) {
   const sortedEvents = events.sort(sortDateDown);
   if (sortedEvents.length <= 0) {
@@ -15,6 +23,12 @@ export function getTripDuration(events = []) {
   return `${startDate}&nbsp;&mdash;&nbsp;${endDate}`;
 }
 
+/**
+ * Функция генерации строки с маршрутом путешествия
+ * @param {Array} events
+ * @param {Array} destinations
+ * @return {string}
+ */
 export function getTripTitle(events = [], destinations = []) {
   const destinationsNames = events.sort(sortDateDown)
     .map((event) => destinations.find((destination) => destination.id === event.destination).name);
@@ -25,6 +39,12 @@ export function getTripTitle(events = [], destinations = []) {
   return `${destinationsNames.at(0)}&nbsp;&mdash;&nbsp;...&nbsp;&mdash;&nbsp;${destinationsNames.at(-1)}`;
 }
 
+/**
+ * Функция расчета стоимости активных предложений
+ * @param {*} eventOffersIds
+ * @param {*} offers
+ * @returns {number}
+ */
 function getOffersCost(eventOffersIds = [], offers = []) {
   const offersCost = eventOffersIds.reduce(
     (result, id) => result + (offers.find((offer) => offer.id === id)?.price ?? 0),
@@ -33,6 +53,12 @@ function getOffersCost(eventOffersIds = [], offers = []) {
   return offersCost;
 }
 
+/**
+ * Функция расчета общей стоимости путушествия
+ * @param {Array} events
+ * @param {Array} offers
+ * @returns {number}
+ */
 export function getTripCost(events = [], offers = []) {
   const tripCost = events.reduce(
     (result, event) => result + Number(event.basePrice) + getOffersCost(event.offers, offers.find((offer) => event.type === offer.type)?.offers),

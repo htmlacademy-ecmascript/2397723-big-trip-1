@@ -4,16 +4,20 @@ dayjs.extend(duration);
 import { DateFormat } from '../const';
 
 /**
- * @param {string} dueDate
+ * Функция приведения строки даты в заданный вид
+ * @param {string} date
  * @param {string} dateFormat
+ * @return {string}
  */
 export function humanizeDate(date, dateFormat) {
   return date ? dayjs(date).format(dateFormat) : '';
 }
 
 /**
+ * Функция расчета продолжительности
  * @param {string} start
  * @param {string} finish
+ * @return {string}
  */
 export function calculateDuration(start, finish) {
   const startDate = dayjs(start);
@@ -29,21 +33,29 @@ export function calculateDuration(start, finish) {
 }
 
 /**
+ * Функция установки первой буквы строки в верхний регистр
  * @param {string} word
+ * @return {string}
  */
-export const capitalizeFirstLetter = (word) => word.charAt(0).toUpperCase() + word.slice(1);
+export function capitalizeFirstLetter(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
 /**
+ * Функция поиска элемента массива по ключу идентификатора
  * @param {string} id
  * @param {Array} array
+ * @return {any}
  */
 export function getById(id, array) {
   return array.find((item) => item.id === id);
 }
 
 /**
+ * Функция поиска заданных предложений
  * @param {Array} idsArray
  * @param {Array} offersArray
+ * @return {Array}
  */
 export function getOffers(idsArray, offersArray) {
   const offersArr = [];
@@ -54,25 +66,31 @@ export function getOffers(idsArray, offersArray) {
 }
 
 /**
+ * Функция поиска элемента массива по значению заданного ключа
  * @param {string} key
  * @param {string} value
  * @param {Array} array
+ * @return {any}
  */
 export function getByKey(key, value, array) {
   return array.find((item) => item[key] === value);
 }
 
 /**
+ * Функция изменения заданных элементов массива
  * @param {Array} items
  * @param {AbstractView} update
+ * @return {Array}
  */
 export function updateItemById(items, updatedItem) {
   return items.map((item) => item.id === updatedItem.id ? updatedItem : item);
 }
 
 /**
+ * Функция удаления заданного количества префиксов из строки
  * @param {string} trimmedString
  * @param {number} trimmingPartsCount
+ * @return {string}
  */
 export function trimPrefixFromString(trimmedString, trimmingPartsCount = 2) {
   const reg = `([a-z]*-){${trimmingPartsCount}}`;
