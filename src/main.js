@@ -1,5 +1,5 @@
 import FilterPresenter from './presenter/filter-presenter';
-import TripEventsPresenter from './presenter/trip-events';
+import TripEventsPresenter from './presenter/trip-events-presenter';
 import EventsModel from './model/events-model';
 import OffersModel from './model/offers-model';
 import DestinationsModel from './model/destinations-model';
