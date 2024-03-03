@@ -1,4 +1,5 @@
-import { capitalizeFirstLetter, humanizeDate, DateFormat, getByKey, getById } from '../utils';
+import { capitalizeFirstLetter, humanizeDate, getByKey, getById } from '../utils/common';
+import { DateFormat } from '../const';
 
 function createTypeListTemplate({ eventId, eventType, types }) {
   return (

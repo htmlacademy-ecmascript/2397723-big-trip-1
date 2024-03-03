@@ -1,3 +1,14 @@
+export const DateFormat = {
+  POINT_TIME: 'HH:mm',
+  POINT_DAY: 'MMM DD',
+  DURATION_DAYS: 'DD[D] HH[H] mm[M]',
+  DURATION_HOURS: 'HH[H] mm[M]',
+  DURATION_MINUTES: 'mm[M]',
+  DATE_TIME: 'DD/MM/YY HH:mm',
+  FLATPICKR: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
+  MAIN_INFO_DURATION: 'DD MMM'
+};
+
 export const UserAction = {
   UPDATE_EVENT: 'UPDATE_EVENT',
   ADD_EVENT: 'ADD_EVENT',

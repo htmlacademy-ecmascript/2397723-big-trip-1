@@ -1,15 +1,18 @@
 import dayjs from 'dayjs';
-import { sortDateDown } from '../utils';
+import { sortDateDown } from './sort-utils';
+import { DateFormat } from '../const';
 
 const DESTINATIONS_ITEMS_AMOUNT = 3;
 
 export function getTripDuration(events = []) {
   const sortedEvents = events.sort(sortDateDown);
-  const duration = `${dayjs(sortedEvents.at(0).dateFrom).format('DD MMM')}&nbsp;&mdash;&nbsp;${dayjs(sortedEvents.at(-1).dateTo).format('DD MMM')}`;
-  if (sortedEvents.length > 0) {
-    return duration;
+  if (sortedEvents.length <= 0) {
+    return '';
   }
-  return '';
+
+  const startDate = dayjs(sortedEvents.at(0).dateFrom).format(DateFormat.MAIN_INFO_DURATION);
+  const endDate = dayjs(sortedEvents.at(-1).dateTo).format(DateFormat.MAIN_INFO_DURATION);
+  return `${startDate}&nbsp;&mdash;&nbsp;${endDate}`;
 }
 
 export function getTripTitle(events = [], destinations = []) {

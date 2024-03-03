@@ -1,17 +1,7 @@
-import { FilterType } from './const';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
-
-export const DateFormat = {
-  POINT_TIME: 'HH:mm',
-  POINT_DAY: 'MMM DD',
-  DURATION_DAYS: 'DD[D] HH[H] mm[M]',
-  DURATION_HOURS: 'HH[H] mm[M]',
-  DURATION_MINUTES: 'mm[M]',
-  DATE_TIME: 'DD/MM/YY HH:mm',
-  FLATPICKR: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]'
-};
+import { DateFormat } from '../const';
 
 /**
  * @param {string} dueDate
@@ -81,34 +71,6 @@ export function updateItemById(items, updatedItem) {
 }
 
 /**
- * @param {Object} eventA
- * @param {Object} eventB
- */
-export function sortDateDown(eventA, eventB) {
-  return dayjs(eventA.dateFrom).diff(dayjs(eventB.dateFrom));
-}
-
-/**
- * @param {Object} eventA
- * @param {Object} eventB
- */
-export function sortTimeUp(eventA, eventB) {
-  const durationA = dayjs.duration(dayjs(eventA.dateTo).diff(dayjs(eventA.dateFrom)));
-  const durationB = dayjs.duration(dayjs(eventB.dateTo).diff(dayjs(eventB.dateFrom)));
-  return durationB - durationA;
-}
-
-/**
- * @param {Object} eventA
- * @param {Object} eventB
- */
-export function sortPriceUp(eventA, eventB) {
-  const priceA = eventA.basePrice;
-  const priceB = eventB.basePrice;
-  return priceB - priceA;
-}
-
-/**
  * @param {string} trimmedString
  * @param {number} trimmingPartsCount
  */
@@ -117,31 +79,3 @@ export function trimPrefixFromString(trimmedString, trimmingPartsCount = 2) {
   const trimmingPart = new RegExp(reg);
   return trimmedString.replace(trimmingPart, '');
 }
-
-/**
- * @param {string} date
- */
-function isEventAfter(date) {
-  return date && dayjs(date).isAfter(dayjs(), 'D');
-}
-
-/**
- * @param {string} date
- */
-function isEventToday(date) {
-  return date && dayjs(date).isSame(dayjs(), 'D');
-}
-
-/**
- * @param {string} date
- */
-function isEventBefore(date) {
-  return date && dayjs(date).isBefore(dayjs(), 'D');
-}
-
-export const filter = {
-  [FilterType.EVERYTHING]: (events) => events,
-  [FilterType.FUTURE]: (events) => events.filter((event) => isEventAfter(event.dateFrom)),
-  [FilterType.PRESENT]: (events) => events.filter((event) => isEventToday(event.dateFrom)),
-  [FilterType.PAST]: (events) => events.filter((event) => isEventBefore(event.dateTo)),
-};

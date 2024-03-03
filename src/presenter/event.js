@@ -1,4 +1,4 @@
-import { getByKey, getById } from '../utils';
+import { getByKey, getById } from '../utils/common';
 import { render, replace, remove } from '../framework/render';
 import EventView from '../view/event';
 import FormView from '../view/form';
