@@ -6,7 +6,8 @@ import DestinationsModel from './model/destinations-model';
 import FilterModel from './model/filter-model.js';
 import NewEventButtonView from './view/new-event-button.js';
 import { render } from './framework/render.js';
-import DataApiService from './dataApiService.js';
+import DataApiService from './data-api-service.js';
+import TripMainPresenter from './presenter/trip-main-presenter.js';
 
 const AUTHORIZATION = 'Basic Om9C2nY5ply';
 const ENDPOINT = 'https://20.objects.htmlacademy.pro/big-trip';
@@ -17,13 +18,9 @@ const tripHeaderMainElement = document.querySelector('.trip-main');
 
 const dataApiService = new DataApiService(ENDPOINT, AUTHORIZATION);
 
+const eventsModel = new EventsModel(dataApiService);
 const offersModel = new OffersModel(dataApiService);
 const destinationsModel = new DestinationsModel(dataApiService);
-const eventsModel = new EventsModel({
-  service: dataApiService,
-  destinationsModel,
-  offersModel
-});
 
 const filterModel = new FilterModel();
 
@@ -55,9 +52,25 @@ function handleNewEventFormClose() {
   newEventButtonComponent.element.disabled = false;
 }
 
+const tripMainPresenter = new TripMainPresenter({
+  eventsModel,
+  offersModel,
+  destinationsModel,
+  tripMainContainer: tripHeaderMainElement
+});
+
+async function initModels() {
+  await Promise.all([
+    offersModel.init(),
+    destinationsModel.init(),
+  ]);
+  await eventsModel.init();
+}
+
+initModels().then(() => {
+  render(newEventButtonComponent, tripHeaderMainElement);
+  tripMainPresenter.init();
+});
+
 filterPresenter.init();
 tripEventsPresenter.init();
-eventsModel.init()
-  .finally(() => {
-    render(newEventButtonComponent, tripHeaderMainElement);
-  });

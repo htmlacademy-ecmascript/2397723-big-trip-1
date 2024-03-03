@@ -7,65 +7,61 @@ const Method = {
   DELETE: 'DELETE',
 };
 
-const ENDPOINTS = {
-  events: 'points',
-  offers: 'offers',
-  destinations: 'destinations'
+const Endpoints = {
+  EVENTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations'
 };
 
 export default class DataApiService extends ApiService {
 
   async getDestinations() {
-    return this._load({ url: ENDPOINTS.destinations })
+    return this._load({ url: Endpoints.DESTINATIONS })
       .then(ApiService.parseResponse);
   }
 
   async getOffers() {
-    return this._load({ url: ENDPOINTS.offers })
+    return this._load({ url: Endpoints.OFFERS })
       .then(ApiService.parseResponse);
   }
 
   async getEvents() {
-    return this._load({ url: ENDPOINTS.events })
+    return this._load({ url: Endpoints.EVENTS })
       .then(ApiService.parseResponse);
   }
 
   async updateEvent(event) {
     const response = await this._load({
-      url: `points/${event.id}`,
+      url: `${Endpoints.EVENTS}/${event.id}`,
       method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(event)),
+      body: JSON.stringify(this.#adaptEventToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   async addEvent(event) {
     const response = await this._load({
-      url: 'points',
+      url: Endpoints.EVENTS,
       method: Method.POST,
-      body: JSON.stringify(this.#adaptToServer(event)),
+      body: JSON.stringify(this.#adaptEventToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   async deleteEvent(event) {
     const response = await this._load({
-      url: `points/${event.id}`,
+      url: `${Endpoints.EVENTS}/${event.id}`,
       method: Method.DELETE,
     });
 
     return response;
   }
 
-  #adaptToServer(event) {
+  #adaptEventToServer(event) {
     const adaptedEvent = {
       ...event,
       'base_price': Number(event['basePrice']),

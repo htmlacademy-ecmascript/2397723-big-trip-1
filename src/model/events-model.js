@@ -2,15 +2,11 @@ import { UpdateType } from '../const';
 import Observable from '../framework/observable';
 export default class EventsModel extends Observable {
   #service = null;
-  #offersModel = null;
-  #destinationsModel = null;
   #events = [];
 
-  constructor({ service, offersModel, destinationsModel }) {
+  constructor(service) {
     super();
     this.#service = service;
-    this.#offersModel = offersModel;
-    this.#destinationsModel = destinationsModel;
   }
 
   get events() {
@@ -19,10 +15,6 @@ export default class EventsModel extends Observable {
 
   async init() {
     try {
-      await Promise.all([
-        this.#offersModel.init(),
-        this.#destinationsModel.init()
-      ]);
       const events = await this.#service.getEvents();
       this.#events = events.map(this.#adaptToClient);
       this._notify(UpdateType.INIT, {isError: false});

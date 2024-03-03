@@ -17,6 +17,10 @@ export default class SortPresenter {
     this.#renderSort();
   }
 
+  destroy() {
+    remove(this.#sortComponent);
+  }
+
   #sortClick = (sortType) => {
     this.#handlerSortOptionChange(sortType);
   };
@@ -24,9 +28,5 @@ export default class SortPresenter {
   #renderSort () {
     this.#sortComponent = new SortView({ currentSortType: this.#currentSortType, onSortClick: this.#sortClick});
     render(this.#sortComponent, this.#boardComponent, RenderPosition.AFTERBEGIN);
-  }
-
-  destroy() {
-    remove(this.#sortComponent);
   }
 }

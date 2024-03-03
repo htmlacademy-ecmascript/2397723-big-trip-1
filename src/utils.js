@@ -118,14 +118,23 @@ export function trimPrefixFromString(trimmedString, trimmingPartsCount = 2) {
   return trimmedString.replace(trimmingPart, '');
 }
 
+/**
+ * @param {string} date
+ */
 function isEventAfter(date) {
   return date && dayjs(date).isAfter(dayjs(), 'D');
 }
 
+/**
+ * @param {string} date
+ */
 function isEventToday(date) {
   return date && dayjs(date).isSame(dayjs(), 'D');
 }
 
+/**
+ * @param {string} date
+ */
 function isEventBefore(date) {
   return date && dayjs(date).isBefore(dayjs(), 'D');
 }
