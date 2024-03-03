@@ -1,6 +1,6 @@
 import { remove, render, RenderPosition, replace } from '../framework/render';
-import { getTripTitle, getTripDuration, getTripCost } from '../utils/trip-main-info';
-import TripMainView from '../view/trip-main';
+import { getTripTitle, getTripDuration, getTripCost } from '../utils/trip-main-info-utils';
+import TripMainView from '../view/trip-main-info';
 
 export default class TripMainPresenter {
   #eventsModel = [];

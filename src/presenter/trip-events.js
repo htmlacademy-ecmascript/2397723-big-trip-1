@@ -1,14 +1,14 @@
 import { RenderPosition, remove, render } from '../framework/render';
 import EventsBoardView from '../view/events-board';
 import LoadingView from '../view/loading';
-import EventPresenter from './event';
+import EventPresenter from './event-presenter';
 import EmptyEventsListView from '../view/empty-events-list';
-import SortPresenter from './sort';
-import { sortDateDown, sortTimeUp, sortPriceUp } from '../utils/sort-utils.js';
-import { filter } from '../utils/filter-utils.js';
+import SortPresenter from './sort-presenter';
+import { sortDateDown, sortTimeUp, sortPriceUp } from '../utils/sort-utils';
+import { filter } from '../utils/filter-utils';
 import { UserAction, UpdateType, FilterType, SortType } from '../const';
 import NewEventPresenter from './new-event-presenter';
-import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,

@@ -1,4 +1,4 @@
-import createTripMainTemplate from './trip-main.template';
+import createTripMainTemplate from './trip-main-info.template';
 import AbstractView from '../framework/view/abstract-view';
 
 export default class TripMainView extends AbstractView {

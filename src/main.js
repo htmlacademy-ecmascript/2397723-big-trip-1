@@ -1,13 +1,13 @@
-import FilterPresenter from './presenter/filter';
+import FilterPresenter from './presenter/filter-presenter';
 import TripEventsPresenter from './presenter/trip-events';
-import EventsModel from './model/events-model.js';
+import EventsModel from './model/events-model';
 import OffersModel from './model/offers-model';
 import DestinationsModel from './model/destinations-model';
-import FilterModel from './model/filter-model.js';
-import NewEventButtonView from './view/new-event-button.js';
-import { render } from './framework/render.js';
-import DataApiService from './data-api-service.js';
-import TripMainPresenter from './presenter/trip-main-presenter.js';
+import FilterModel from './model/filter-model';
+import NewEventButtonView from './view/new-event-button';
+import { render } from './framework/render';
+import DataApiService from './data-api-service';
+import TripMainPresenter from './presenter/trip-main-presenter';
 
 const AUTHORIZATION = 'Basic Om9C2nY5ply';
 const ENDPOINT = 'https://20.objects.htmlacademy.pro/big-trip';
