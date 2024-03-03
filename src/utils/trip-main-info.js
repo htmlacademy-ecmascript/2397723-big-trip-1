@@ -32,7 +32,7 @@ function getOffersCost(eventOffersIds = [], offers = []) {
 
 export function getTripCost(events = [], offers = []) {
   const tripCost = events.reduce(
-    (result, event) => result + event.basePrice + getOffersCost(event.offers, offers.find((offer) => event.type === offer.type)?.offers),
+    (result, event) => result + Number(event.basePrice) + getOffersCost(event.offers, offers.find((offer) => event.type === offer.type)?.offers),
     0
   );
   return tripCost;
