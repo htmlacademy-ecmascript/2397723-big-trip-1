@@ -831,3 +831,10 @@ main {
     padding-right: 20px; }
   .event__photo:not(:last-child) {
     margin-right: 5px; }
+
+.error {
+  background-color: red;
+  text-align: center;
+  color: white;
+  height: 1,5rem;
+}
