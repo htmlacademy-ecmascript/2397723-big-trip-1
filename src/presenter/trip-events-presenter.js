@@ -164,16 +164,18 @@ export default class TripEventsPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
-        if (data.isError) {
-          this.#isError = true;
-          this.#renderBoard();
-          break;
-        } else {
-          this.#isLoading = false;
-          remove(this.#loadingComponent);
-          this.#renderBoard();
+        this.#isLoading = false;
+        this.#isError = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
+      case UpdateType.ERR:
+        if (data.refreshBoard === false) {
           break;
         }
+        this.#isError = true;
+        this.#renderBoard();
+        break;
     }
   };
 
@@ -226,6 +228,7 @@ export default class TripEventsPresenter {
     if (this.#isError) {
       this.#clearBoard({ resetSortType: true });
       this.#sortPresenter.destroy();
+      this.#renderLoading();
       return;
     }
     if (this.#emptyEventsListView) {

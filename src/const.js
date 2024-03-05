@@ -20,6 +20,7 @@ export const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+  ERR: 'ERR'
 };
 
 export const FilterType = {

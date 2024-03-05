@@ -5,6 +5,7 @@ import OffersModel from './model/offers-model';
 import DestinationsModel from './model/destinations-model';
 import FilterModel from './model/filter-model';
 import NewEventButtonView from './view/new-event-button';
+import ErrorMessagePresenter from './model/error-message-presenter';
 import { render } from './framework/render';
 import DataApiService from './data-api-service';
 import TripMainPresenter from './presenter/trip-main-presenter';
@@ -59,6 +60,13 @@ const tripMainPresenter = new TripMainPresenter({
   tripMainContainer: tripHeaderMainElement
 });
 
+const errorMessagePresenter = new ErrorMessagePresenter({
+  container: tripEventsElement,
+  eventsModel,
+  offersModel,
+  destinationsModel
+});
+
 async function initModels() {
   await Promise.all([
     offersModel.init(),
@@ -68,9 +76,12 @@ async function initModels() {
 }
 
 initModels().then(() => {
-  render(newEventButtonComponent, tripHeaderMainElement);
-  tripMainPresenter.init();
+  if (eventsModel.events.length > 0 && offersModel.offers.length > 0 && destinationsModel.destinations.length > 0) {
+    render(newEventButtonComponent, tripHeaderMainElement);
+    tripMainPresenter.init();
+  }
 });
 
+errorMessagePresenter.init();
 filterPresenter.init();
 tripEventsPresenter.init();

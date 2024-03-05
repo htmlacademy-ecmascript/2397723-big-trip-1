@@ -97,3 +97,17 @@ export function trimPrefixFromString(trimmedString, trimmingPartsCount = 2) {
   const trimmingPart = new RegExp(reg);
   return trimmedString.replace(trimmingPart, '');
 }
+
+/**
+ * Функция устранения "дребезга"
+ * @param {debouncedFunction} callback
+ * @param {number} timeoutDelay
+ * @return {debouncedFunction}
+ */
+export const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
