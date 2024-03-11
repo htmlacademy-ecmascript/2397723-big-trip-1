@@ -41,16 +41,15 @@ export function getTripTitle(events = [], destinations = []) {
 
 /**
  * Функция расчета стоимости активных предложений
- * @param {*} eventOffersIds
- * @param {*} offers
+ * @param {Array} eventOffersIds
+ * @param {Array} offers
  * @returns {number}
  */
 function getOffersCost(eventOffersIds = [], offers = []) {
-  const offersCost = eventOffersIds.reduce(
+  return eventOffersIds.reduce(
     (result, id) => result + (offers.find((offer) => offer.id === id)?.price ?? 0),
     0
   );
-  return offersCost;
 }
 
 /**
@@ -60,9 +59,8 @@ function getOffersCost(eventOffersIds = [], offers = []) {
  * @returns {number}
  */
 export function getTripCost(events = [], offers = []) {
-  const tripCost = events.reduce(
+  return events.reduce(
     (result, event) => result + Number(event.basePrice) + getOffersCost(event.offers, offers.find((offer) => event.type === offer.type)?.offers),
     0
   );
-  return tripCost;
 }

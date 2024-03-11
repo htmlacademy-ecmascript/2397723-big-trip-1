@@ -9,7 +9,7 @@ export default class FilterPresenter {
   #filterModel = null;
   #eventsModel = null;
 
-  constructor({container, filterModel, eventsModel}) {
+  constructor({ container, filterModel, eventsModel }) {
     this.#container = container;
     this.#filterModel = filterModel;
     this.#eventsModel = eventsModel;
@@ -48,7 +48,8 @@ export default class FilterPresenter {
     const allFilters = Object.values(FilterType);
     const disabledFilters = [];
     allFilters.forEach((filterType) => {
-      const filteredEvents = filter[filterType](this.#eventsModel.events);
+      const filterFn = filter[filterType];
+      const filteredEvents = filterFn && typeof filterFn === 'function' ? filterFn(this.#eventsModel.events) : [];
       if (filteredEvents.length <= 0) {
         disabledFilters.push(filterType);
       }

@@ -52,20 +52,6 @@ export function getById(id, array) {
 }
 
 /**
- * Функция поиска заданных предложений
- * @param {Array} idsArray
- * @param {Array} offersArray
- * @return {Array}
- */
-export function getOffers(idsArray, offersArray) {
-  const offersArr = [];
-  idsArray.forEach((item) => (
-    item && offersArr.push(getById(item, offersArray))
-  ));
-  return offersArr;
-}
-
-/**
  * Функция поиска элемента массива по значению заданного ключа
  * @param {string} key
  * @param {string} value
@@ -74,16 +60,6 @@ export function getOffers(idsArray, offersArray) {
  */
 export function getByKey(key, value, array) {
   return array.find((item) => item[key] === value);
-}
-
-/**
- * Функция изменения заданных элементов массива
- * @param {Array} items
- * @param {AbstractView} update
- * @return {Array}
- */
-export function updateItemById(items, updatedItem) {
-  return items.map((item) => item.id === updatedItem.id ? updatedItem : item);
 }
 
 /**
@@ -100,9 +76,9 @@ export function trimPrefixFromString(trimmedString, trimmingPartsCount = 2) {
 
 /**
  * Функция устранения "дребезга"
- * @param {debouncedFunction} callback
+ * @param {Function} callback
  * @param {number} timeoutDelay
- * @return {debouncedFunction}
+ * @return {Function}
  */
 export const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;

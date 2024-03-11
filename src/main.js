@@ -5,7 +5,7 @@ import OffersModel from './model/offers-model';
 import DestinationsModel from './model/destinations-model';
 import FilterModel from './model/filter-model';
 import NewEventButtonView from './view/new-event-button';
-import ErrorMessagePresenter from './model/error-message-presenter';
+import ErrorMessagePresenter from './presenter/error-message-presenter';
 import { render } from './framework/render';
 import DataApiService from './data-api-service';
 import TripMainPresenter from './presenter/trip-main-presenter';
