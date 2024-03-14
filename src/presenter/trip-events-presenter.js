@@ -1,13 +1,14 @@
 import { RenderPosition, remove, render } from '../framework/render';
 import EventsBoardView from '../view/events-board';
 import LoadingView from '../view/loading';
-import EventPresenter from './event';
+import EventPresenter from './event-presenter';
 import EmptyEventsListView from '../view/empty-events-list';
-import SortPresenter from './sort';
-import { sortDateDown, sortTimeUp, sortPriceUp, filter } from '../utils';
+import SortPresenter from './sort-presenter';
+import { sortDateDown, sortTimeUp, sortPriceUp } from '../utils/sort-utils';
+import { filter } from '../utils/filter-utils';
 import { UserAction, UpdateType, FilterType, SortType } from '../const';
 import NewEventPresenter from './new-event-presenter';
-import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -163,16 +164,18 @@ export default class TripEventsPresenter {
         this.#renderBoard();
         break;
       case UpdateType.INIT:
-        if (data.isError) {
-          this.#isError = true;
-          this.#renderBoard();
-          break;
-        } else {
-          this.#isLoading = false;
-          remove(this.#loadingComponent);
-          this.#renderBoard();
+        this.#isLoading = false;
+        this.#isError = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
+      case UpdateType.ERR:
+        if (data.refreshBoard === false) {
           break;
         }
+        this.#isError = true;
+        this.#renderBoard();
+        break;
     }
   };
 
@@ -225,6 +228,7 @@ export default class TripEventsPresenter {
     if (this.#isError) {
       this.#clearBoard({ resetSortType: true });
       this.#sortPresenter.destroy();
+      this.#renderLoading();
       return;
     }
     if (this.#emptyEventsListView) {

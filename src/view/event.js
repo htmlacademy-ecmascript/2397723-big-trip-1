@@ -1,5 +1,6 @@
 import createEventTemplate from './event.template';
 import AbstractView from '../framework/view/abstract-view';
+import { debounce } from '../utils/common';
 
 export default class EventView extends AbstractView {
   #event = null;
@@ -35,8 +36,8 @@ export default class EventView extends AbstractView {
     this.#handleEditClick();
   };
 
-  #favoriteClickHandler = (evt) => {
+  #favoriteClickHandler = debounce((evt) => {
     evt.preventDefault();
     this.#handlerFavoriteClick();
-  };
+  });
 }

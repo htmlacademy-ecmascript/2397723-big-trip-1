@@ -1,4 +1,4 @@
-import { trimPrefixFromString } from '../utils';
+import { trimPrefixFromString } from '../utils/common';
 
 export default function createSortTemplate(sortOptions, currentSortType) {
   return (

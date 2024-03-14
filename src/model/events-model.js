@@ -17,10 +17,10 @@ export default class EventsModel extends Observable {
     try {
       const events = await this.#service.getEvents();
       this.#events = events.map(this.#adaptToClient);
-      this._notify(UpdateType.INIT, {isError: false});
-    } catch (err) {
+      this._notify(UpdateType.INIT, { isError: false });
+    } catch (error) {
       this.#events = [];
-      this._notify(UpdateType.INIT, {isError: true});
+      this._notify(UpdateType.ERR, { error: 'Something wrong' });
     }
   }
 
@@ -42,6 +42,7 @@ export default class EventsModel extends Observable {
 
       this._notify(updateType, updatedEvent);
     } catch (error) {
+      this._notify(UpdateType.ERR, { error: 'Can\'t update task', refreshBoard: false });
       throw new Error('Can\'t update task');
     }
   }
@@ -56,6 +57,7 @@ export default class EventsModel extends Observable {
       ];
       this._notify(updateType, newEvent);
     } catch (error) {
+      this._notify(UpdateType.ERR, { error: 'Can\'t add task', refreshBoard: false });
       throw new Error('Can\'t add task');
     }
   }
@@ -74,6 +76,7 @@ export default class EventsModel extends Observable {
       ];
       this._notify(updateType);
     } catch (error) {
+      this._notify(UpdateType.ERR, { error: 'Can\'t delete task', refreshBoard: false });
       throw new Error('Can\'t delete task');
     }
   }

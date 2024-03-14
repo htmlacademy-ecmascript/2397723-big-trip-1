@@ -1,3 +1,4 @@
+import { UpdateType } from '../const';
 import Observable from '../framework/observable';
 
 export default class OffersModel extends Observable {
@@ -14,7 +15,11 @@ export default class OffersModel extends Observable {
   }
 
   async init() {
-    const offers = await this.#service.getOffers();
-    this.#offers = offers;
+    try {
+      const offers = await this.#service.getOffers();
+      this.#offers = offers;
+    } catch (error) {
+      this._notify(UpdateType.ERR, { error: 'Can\'t get offers' });
+    }
   }
 }

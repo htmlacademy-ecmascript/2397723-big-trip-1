@@ -1,10 +1,10 @@
 import createFormTemplate from './form.template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-import { getByKey, trimPrefixFromString } from '../utils';
+import { getByKey, trimPrefixFromString } from '../utils/common';
 import 'flatpickr/dist/flatpickr.min.css';
-import { humanizeDate, DateFormat } from '../utils';
-
 import flatpickr from 'flatpickr';
+import { humanizeDate } from '../utils/common';
+import { DateFormat } from '../const';
 
 const datePickerDefaultOptions = {
   dateFormat: 'd/m/y H:i',

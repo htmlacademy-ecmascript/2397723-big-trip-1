@@ -1,4 +1,5 @@
-import { humanizeDate, calculateDuration, DateFormat } from '../utils';
+import { humanizeDate, calculateDuration } from '../utils/common';
+import { DateFormat } from '../const';
 
 function createOffersListTemplate(offers) {
   return (

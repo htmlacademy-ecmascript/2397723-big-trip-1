@@ -1,6 +1,6 @@
-import {remove, render, RenderPosition} from '../framework/render.js';
-import {UserAction, UpdateType} from '../const.js';
-import FormView from '../view/form.js';
+import {remove, render, RenderPosition} from '../framework/render';
+import {UserAction, UpdateType} from '../const';
+import FormView from '../view/form';
 
 export default class NewEventPresenter {
   #offers = null;

@@ -1,12 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-
-function createLoadingTemplate() {
-  return (
-    `<p class="trip-events__msg">
-    Loading...
-  </p >`
-  );
-}
+import { createLoadingTemplate } from './loading.template';
 
 export default class LoadingView extends AbstractView {
   get template() {
