@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { createNewEventButtonTemplate } from './new-event-button.template';
+import { createNewEventButtonTemplate } from './new-event-button-template';
 
 
 export default class NewEventButtonView extends AbstractView {

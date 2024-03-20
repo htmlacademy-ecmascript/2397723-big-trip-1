@@ -1,4 +1,4 @@
-import createEventTemplate from './event.template';
+import createEventTemplate from './event-template';
 import AbstractView from '../framework/view/abstract-view';
 import { debounce } from '../utils/common';
 

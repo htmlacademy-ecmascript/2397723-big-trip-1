@@ -1,4 +1,4 @@
-import createEventsBoardTemplate from './events-board.template';
+import createEventsBoardTemplate from './events-board-template';
 import AbstractView from '../framework/view/abstract-view';
 
 
