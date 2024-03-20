@@ -1,4 +1,4 @@
-import createSortTemplate from './sort.template';
+import createSortTemplate from './sort-template';
 import AbstractView from '../framework/view/abstract-view';
 
 const SORT_OPTIONS = [

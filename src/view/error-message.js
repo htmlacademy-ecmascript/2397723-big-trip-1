@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { createErrorMessageTemplate } from './error-message.template';
+import { createErrorMessageTemplate } from './error-message-template';
 
 export default class ErrorMessageView extends AbstractView {
   #message;

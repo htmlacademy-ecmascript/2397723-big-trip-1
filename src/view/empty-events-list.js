@@ -1,4 +1,4 @@
-import createEmptyEventsListTemplate from './empty-events-list.template';
+import createEmptyEventsListTemplate from './empty-events-list-template';
 import AbstractView from '../framework/view/abstract-view';
 
 export default class EmptyEventsListView extends AbstractView {

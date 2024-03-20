@@ -1,4 +1,4 @@
-import createFormTemplate from './form.template';
+import createFormTemplate from './form-template';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import { getByKey, trimPrefixFromString } from '../utils/common';
 import 'flatpickr/dist/flatpickr.min.css';
